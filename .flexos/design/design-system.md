@@ -1,192 +1,202 @@
 ---
-id: design-system
-title: "Design System"
-description: "Design tokens, visual identity, and guidelines for generating the project's CSS design system"
-type: design
-subtype: manifest
-status: draft
-sequence: 1
-tags: [design, tokens, colors, typography, system]
-relatesTo: [docs/core/006-design.md, assets/manifest.md]
-createdAt: ""
-updatedAt: ""
+
+```markdown
+---
+type: config
+subtype: design-system
+title: Design System
 ---
 
-<flex_block type="instructions">
-This file defines the project's visual identity and design tokens. It serves two purposes:
+This design system establishes the foundational visual and interactive language for the Example Consulting Group website. It is designed to empower the AI builder to create pages that are consistent, professional, and aligned with our core brand personality: **Quiet Confidence**.
 
-1. For the AI: When generating prototypes, components, or CSS, read this file to understand the project's visual language — colors, typography, spacing, component patterns. Generate a tokens.css and components.css in prototype/shared/ based on what's defined here.
+The system is divided into two parts:
 
-2. For the builder: When implementing the real application, use the CSS custom properties defined here as the single source of truth for all visual decisions.
+1.  **Tokens:** These are the non-negotiable, exact values for colors, typography, and spacing. The builder **must** adhere to these to ensure brand consistency.
+2.  **Creative Direction:** These are guiding principles for layout, motion, and visual style. They are meant to inspire creative and effective solutions within the established brand framework.
 
-The tokens flex_block below contains the actual CSS custom property values. The markdown sections explain the design rationale — why these colors, what the vibe is, how components should feel. The AI should read both.
-</flex_block>
+---
 
-# Design System
+# PART 1: TOKENS (The Builder MUST Use These)
 
-## Design Vision
+## Colors
 
-This section captures the overall aesthetic direction. The AI uses this to make consistent creative decisions when generating prototypes and UI.
+The color palette is minimalist and professional, designed to build trust and ensure content clarity. The primary navy conveys stability and expertise, while the accent ochre provides a sophisticated, human touch for key interactions.
 
-- **Style:** (Modern, Minimal, Bold, Playful, Corporate, etc.)
-- **Vibe:** (2-3 words describing how the product should feel)
-- **Inspiration:** (Reference apps, websites, or brands)
-- **Dark mode:** Both (light default, dark via toggle and OS preference)
+The Tailwind configuration should be:
 
-## Color Tokens — Light Mode
-
-<flex_block type="tokens">
-{
-  "type": "colors",
-  "mode": "light",
-  "tokens": {
-    "--color-primary": "#8b5cf6",
-    "--color-primary-dark": "#7c3aed",
-    "--color-primary-light": "#a78bfa",
-    "--color-accent": "#06b6d4",
-    "--color-success": "#22c55e",
-    "--color-warning": "#f59e0b",
-    "--color-error": "#ef4444",
-    "--color-bg": "#ffffff",
-    "--color-surface": "#f8fafc",
-    "--color-elevated": "#ffffff",
-    "--color-border": "#e2e8f0",
-    "--color-text-primary": "#0f172a",
-    "--color-text-secondary": "#64748b",
-    "--color-text-tertiary": "#94a3b8"
+```javascript
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: '#E8EAF0',
+          100: '#D1D5E1',
+          200: '#A3ADC3',
+          300: '#7584A5',
+          400: '#475C87',
+          500: '#193469',
+          600: '#172E5D',
+          700: '#142851', // Base: #192A51 is very dark, so we use a slightly lighter base for the main tone
+          800: '#112245',
+          900: '#0F1C3A',
+          950: '#0B142A'
+        },
+        accent: {
+          50: '#FBF6EE',
+          100: '#F7EDDC',
+          200: '#EEDAA0',
+          300: '#E5C683',
+          400: '#DCB367',
+          500: '#D4A056', // Base
+          600: '#B78746',
+          700: '#9A7039',
+          800: '#7D5A2F',
+          900: '#604525',
+          950: '#4C361D'
+        },
+        surface: { // For backgrounds, cards, dividers
+          50: '#FFFFFF',    // White
+          100: '#F4F5F7',   // Light Gray
+          200: '#E9ECF0',
+          300: '#D8DDE4',
+          // ... up to 900 for dark text on light backgrounds
+          900: '#101828'    // Dark text color
+        }
+      }
+    }
   }
 }
-</flex_block>
+```
 
-## Color Tokens — Dark Mode
+**Semantic Colors:**
 
-<flex_block type="tokens">
-{
-  "type": "colors",
-  "mode": "dark",
-  "tokens": {
-    "--color-primary": "#a78bfa",
-    "--color-primary-dark": "#8b5cf6",
-    "--color-primary-light": "#c4b5fd",
-    "--color-accent": "#22d3ee",
-    "--color-success": "#4ade80",
-    "--color-warning": "#fbbf24",
-    "--color-error": "#f87171",
-    "--color-bg": "#0f172a",
-    "--color-surface": "#1e293b",
-    "--color-elevated": "#334155",
-    "--color-border": "#334155",
-    "--color-text-primary": "#f1f5f9",
-    "--color-text-secondary": "#94a3b8",
-    "--color-text-tertiary": "#64748b"
-  }
-}
-</flex_block>
+*   **Success:** `#057A55` (A deep, confident green)
+*   **Warning:** `#D4A056` (Use the base accent color for consistency)
+*   **Error:** `#BE123C` (A strong, but not jarring, red)
 
-### Theme Switching
+## Typography
 
-The prototype supports both light and dark modes via a `data-theme` attribute on `<html>`. Setting `data-theme="dark"` activates dark tokens. If no attribute is set, the OS preference (`prefers-color-scheme: dark`) is used as a fallback. A toggle button in the nav lets users switch manually — the preference is saved to `localStorage`.
+The typography pairs a modern, precise sans-serif for headlines with an elegant, readable serif for body copy, reflecting our brand's blend of modern strategy and established expertise.
 
-### Color Usage
+*   **Heading Font:** **Inter**
+    *   **Reasoning:** Its clean, geometric form provides clarity and authority. It feels modern, confident, and highly legible, perfect for delivering impactful messages.
+*   **Body Font:** **Lora**
+    *   **Reasoning:** An elegant serif that is exceptionally comfortable for long-form reading in case studies and articles. It adds a touch of gravitas and academic rigor, reinforcing the brand's expertise.
 
-- **Primary** — CTAs, links, active states, key interactive elements
-- **Accent** — Secondary highlights, badges, supplementary actions
-- **Semantic** (success/warning/error) — Feedback states, alerts, validation
-- **Surface/Elevated** — Card backgrounds, modals, layered UI
-- **Text tiers** — Primary for headings and body, secondary for labels, tertiary for hints
+**Font Scale (Tailwind CSS):**
 
-## Typography Tokens
+| Class     | Font Size (px) | Font Size (rem) | Line Height |
+| :-------- | :------------- | :-------------- | :---------- |
+| `text-xs` | 12px           | 0.75rem         | 1rem        |
+| `text-sm` | 14px           | 0.875rem        | 1.25rem     |
+| `text-base`| 16px           | 1rem            | 1.75rem     |
+| `text-lg` | 18px           | 1.125rem        | 1.75rem     |
+| `text-xl` | 20px           | 1.25rem         | 1.75rem     |
+| `text-2xl`| 24px           | 1.5rem          | 2rem        |
+| `text-3xl`| 30px           | 1.875rem        | 2.25rem     |
+| `text-4xl`| 36px           | 2.25rem         | 2.5rem      |
+| `text-5xl`| 48px           | 3rem            | 1.2         |
+| `text-6xl`| 60px           | 3.75rem         | 1.2         |
 
-<flex_block type="tokens">
-{
-  "type": "typography",
-  "tokens": {
-    "--font-heading": "Inter, system-ui, -apple-system, sans-serif",
-    "--font-body": "Inter, system-ui, -apple-system, sans-serif",
-    "--font-mono": "JetBrains Mono, ui-monospace, monospace",
-    "--font-size-xs": "0.75rem",
-    "--font-size-sm": "0.875rem",
-    "--font-size-base": "1rem",
-    "--font-size-lg": "1.125rem",
-    "--font-size-xl": "1.25rem",
-    "--font-size-2xl": "1.5rem",
-    "--font-size-3xl": "2rem",
-    "--font-size-4xl": "2.5rem",
-    "--font-weight-normal": "400",
-    "--font-weight-medium": "500",
-    "--font-weight-semibold": "600",
-    "--font-weight-bold": "700",
-    "--line-height-tight": "1.25",
-    "--line-height-normal": "1.5",
-    "--line-height-relaxed": "1.75"
-  }
-}
-</flex_block>
+**Font Weight Usage:**
 
-## Spacing & Layout Tokens
+*   **Normal (400):** Default for all body copy (`Lora`).
+*   **Medium (500):** For subheadings or UI elements like buttons and navigation links (`Inter`).
+*   **Semibold (600):** Primary weight for most headlines (`Inter`) to strike a balance between boldness and sophistication.
+*   **Bold (700):** Use sparingly for the most important hero headlines or for emphasis within body text.
 
-<flex_block type="tokens">
-{
-  "type": "spacing",
-  "tokens": {
-    "--space-1": "0.25rem",
-    "--space-2": "0.5rem",
-    "--space-3": "0.75rem",
-    "--space-4": "1rem",
-    "--space-6": "1.5rem",
-    "--space-8": "2rem",
-    "--space-12": "3rem",
-    "--space-16": "4rem",
-    "--space-24": "6rem",
-    "--radius-sm": "0.375rem",
-    "--radius-md": "0.5rem",
-    "--radius-lg": "0.75rem",
-    "--radius-xl": "1rem",
-    "--radius-full": "9999px",
-    "--shadow-sm": "0 1px 2px rgba(0,0,0,0.05) (light) / rgba(0,0,0,0.3) (dark)",
-    "--shadow-md": "0 4px 6px rgba(0,0,0,0.07) (light) / rgba(0,0,0,0.4) (dark)",
-    "--shadow-lg": "0 10px 15px rgba(0,0,0,0.1) (light) / rgba(0,0,0,0.5) (dark)",
-    "--content-max-width": "1200px",
-    "--sidebar-width": "240px",
-    "--bottom-nav-height": "56px",
-    "--touch-target-min": "44px"
-  }
-}
-</flex_block>
+## Spacing
 
-## Component Guidelines
+We use a spacious and structured layout to create a calm, focused user experience.
 
-These are not CSS — they're instructions for the AI when generating prototype components.
+*   **Section Vertical Padding:** **Generous**. Use `py-24` (96px) or `py-32` (128px) on desktop. Use `py-16` (64px) or `py-20` (80px) on mobile.
+*   **Content Max-Width:** `1280px` (Tailwind's `max-w-7xl`). This provides a comfortable reading line-length without feeling constrained.
+*   **Container Horizontal Padding:** `px-6` (24px) or `px-8` (32px) on desktop. Use `px-4` (16px) on mobile.
 
-### Buttons
-- Primary: filled with `--color-primary`, white text, `--radius-md`
-- Secondary: outlined with `--color-primary`
-- Ghost: text only, no background or border
-- All buttons: minimum `--touch-target-min` height on mobile
+## Shapes
 
-### Cards
-- Background: `--color-surface`, border: `--color-border`
-- Border radius: `--radius-lg`
-- Padding: `--space-4` mobile, `--space-6` desktop
-- Hover: subtle `--shadow-md`
+Shapes should be clean, modern, and purposeful, reflecting a structured and professional aesthetic.
 
-### Navigation
-- Desktop: sidebar at `--sidebar-width`, fixed left
-- Mobile: bottom nav at `--bottom-nav-height`, fixed bottom
-- Active state: `--color-primary` indicator
+*   **Border Radius:** Use minimal rounding.
+    *   `none` or `rounded-sm` (4px): For large containers, images, and page sections.
+    *   `rounded-md` (8px): For interactive elements like buttons and input fields to give them a subtle affordance.
+    *   **Avoid:** `rounded-xl`, `rounded-full` on anything other than avatars or specific icons. We are not a playful, bubbly brand.
+*   **Shadow Style:** Subtle and diffuse. Use shadows to indicate elevation and interactivity, not for decoration.
+    *   Example: `shadow-md` or `shadow-lg` on hover for cards and buttons. Avoid hard, dark shadows.
 
-### Forms
-- Labels above inputs, `--font-size-sm`, `--color-text-secondary`
-- Input height: `--touch-target-min`
-- Focus ring: `--color-primary` with 2px offset
-- Error messages: `--color-error`, `--font-size-sm`, below field
+---
 
-## Generating CSS
+# PART 2: CREATIVE DIRECTION (Inspire the Builder)
 
-When the AI generates `prototype/shared/tokens.css`, it should output:
-- Shared tokens (typography, spacing, radius, layout) in `:root`
-- Light color tokens in `:root, [data-theme="light"]`
-- Dark color tokens in `[data-theme="dark"]`
-- An OS preference fallback in `@media (prefers-color-scheme: dark) { :root:not([data-theme]) { ... } }`
+## Visual Personality
 
-When it generates `components.css`, it should implement the component guidelines using semantic token names — never raw hex values. Components automatically adapt to light/dark because they reference tokens, not colors directly.
+*   **Confident:** Bold typography, strong grid, and direct messaging.
+*   **Sophisticated:** Minimalist color palette, high-quality imagery, and refined details.
+*   **Structured:** Organized, grid-based layouts with generous, intentional whitespace.
+*   **Reassuring:** Calm, deliberate motion and a clear, uncluttered user interface.
+
+## Animation & Motion Language
+
+Motion should be **purposeful and elegant**, enhancing the user experience without causing distraction. It should feel smooth, professional, and reassuring.
+
+*   **Page Transitions:** A subtle, quick cross-fade (`opacity`). No complex sliding or zooming.
+*   **Scroll Animations:** A gentle fade-up and slight vertical translation for elements as they enter the viewport.
+*   **Hover Effects:** Use subtle transformations to provide feedback. A slight lift (`shadow`), a gentle scale, or a color shift to `accent` are preferred.
+*   **Micro-interactions:** Button presses should have a subtle `scale-95` transform. Form fields should get a soft `accent` glow (`ring-2 ring-accent-300`).
+*   **Speed:** **Smooth** (`300-500ms`). This feels more deliberate and less frantic.
+*   **Easing:** **`ease-in-out`**. This creates an elegant, polished feel for all transitions.
+
+**Examples for the Builder:**
+1.  **Card Hover Effect:** `transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1`
+2.  **Button / Link Hover:** `transition-colors duration-300 ease-in-out text-accent-500 hover:text-accent-600`
+3.  **Scroll-in Animation (using a library):** Target elements with `opacity: 0; transform: translateY(20px);` and transition to `opacity: 1; transform: translateY(0);` over `500ms`.
+
+## Layout Philosophy
+
+Our layout is a direct reflection of our thinking: clear, organized, and focused on the content.
+
+*   **Whitespace:** **Generous and intentional.** It is the most important element for creating a calm, premium, and focused feel. Do not crowd elements.
+*   **Grid Rhythm:** A **strict 12-column grid** should be the foundation for all primary page layouts to ensure order and alignment. Asymmetry can be used, but it must feel deliberate and balanced within the grid structure.
+*   **Image Treatment:** Images should be treated as high-quality assets. Present them in clean, full-bleed sections, or frame them crisply within the grid. Avoid floating images with text-wrap.
+*   **Section Rhythm:** Create visual separation between sections by alternating backgrounds between `surface-50` (white) and `surface-100` (light gray). Use ample vertical padding.
+*   **Mobile Approach:** **Simplified and focused.** The experience should not be a direct miniaturization but an adaptation. Prioritize a single-column layout, ensure generous tap targets for links/buttons, and maintain excellent typographic hierarchy.
+
+## Photography & Image Style
+
+Every visual asset must be purposeful and of high quality. **No generic stock photos.**
+
+*   **Style:** A mix of professional photography and clean information design.
+*   **Color Treatment:** Photos should have a natural, professional color grade. They should feel authentic, not overly filtered or saturated. Black and white can be used for architectural or abstract shots to add a timeless, sophisticated feel.
+*   **Subject Matter:**
+    *   **People:** Authentic, professional portraits of the team against consistent backgrounds.
+    *   **Architecture:** Clean, abstract shots of modern architectural details, light, and shadow. This builds the sophisticated, "Munich office" vibe.
+    *   **Information:** Clean UI mockups, diagrams, and data visualizations to illustrate process and results in case studies.
+
+## Inspiration References
+
+These sites successfully capture elements of the "Quiet Confidence" we aim for.
+
+1.  **`instrument.com`:**
+    *   **Borrow:** Their bold, confident typography and strong, unapologetic grid system. Notice how headlines are the primary design element.
+2.  **`ustwo.com`:**
+    *   **Borrow:** Their masterful use of negative space and the way they present case studies with a mix of high-quality visuals and clear, structured text.
+3.  **`bravepeople.co`:**
+    *   **Borrow:** The balance between a highly professional aesthetic and subtle, humanizing details. Their motion design is elegant and purposeful.
+
+## Do's and Don'ts
+
+### DO
+*   **DO** prioritize typography as a primary design element.
+*   **DO** use the grid to create a sense of order and structure on every page.
+*   **DO** embrace generous whitespace to let content breathe and guide the user's focus.
+*   **DO** use high-quality, purposeful imagery (real people, architecture, diagrams).
+*   **DO** ensure every interactive element has clear, subtle feedback on hover and click.
+
+### DON'T
+*   **DON'T** use generic stock photos of people in boardrooms.
+*   **DON'T** add purely decorative elements, gradients, or busy background patterns.
+*   **DON'T** use bright, loud, or playful colors outside the established palette.
+*   **DON'T** create jarring or complex animations. Motion should be elegant and subtle.
+*   **DON'T** crowd elements. If in doubt, add more space.
