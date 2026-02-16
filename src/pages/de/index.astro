@@ -1,0 +1,90 @@
+```astro
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroImpact from '../../components/heroes/HeroImpact.astro';
+import ServicesOverview from '../../components/sections/ServicesOverview.astro';
+import FeaturedWork from '../../components/sections/FeaturedWork.astro';
+import DifferentiatorSection from '../../components/sections/DifferentiatorSection.astro';
+import Testimonial from '../../components/sections/Testimonial.astro';
+import TeamIntro from '../../components/sections/TeamIntro.astro';
+import CtaSection from '../../components/sections/CtaSection.astro';
+
+// SEO Metadaten
+const seoTitle = "Ihr Partner für Digitale Transformation in Bayern | InnovationHub Solutions";
+const seoDescription = "Wir entwickeln maßgeschneiderte Webanwendungen und liefern expertenbasierte Digitalstrategien für den bayerischen Mittelstand. Partnerschaften, die komplexe Technologie in greifbares Geschäftswachstum umsetzen.";
+
+// Daten aus Content Collections abrufen
+const services = (await getCollection('services', ({ id }) => id.startsWith('de/'))).slice(0, 4);
+const featuredWork = (await getCollection('caseStudies', ({ id }) => id.startsWith('de/'))).find(cs => cs.data.featured);
+const teamMembers = (await getCollection('teamMembers')).slice(0, 3);
+const testimonial = (await getCollection('testimonials', ({ id }) => id.startsWith('de/')))[0];
+
+const heroData = {
+    headline: "Ihr Partner für Digitale Transformation<br>für den Bayerischen Mittelstand.",
+    subheadline: "Wir übersetzen komplexe Technologie in greifbares Geschäftswachstum durch maßgeschneiderte Webanwendungen und expertenbasierte Digitalstrategien.",
+    cta: {
+        text: "Unsere Leistungen entdecken",
+        href: "/de/leistungen"
+    },
+    imageUrl: "/images/heroes/munich-architecture-hero.jpg",
+    imageAlt: "Moderne Architektur in München, die Klarheit und Struktur symbolisiert"
+};
+---
+
+<BaseLayout title={seoTitle} description={seoDescription} lang="de">
+    
+    <HeroImpact
+        headline={heroData.headline}
+        subheadline={heroData.subheadline}
+        cta={heroData.cta}
+        imageUrl={heroData.imageUrl}
+        imageAlt={heroData.imageAlt}
+    />
+
+    <ServicesOverview
+        services={services}
+        headline="Unsere Kernkompetenzen"
+        subheadline="Wir bieten strategische Lösungen, die auf die einzigartigen Herausforderungen des bayerischen Mittelstands zugeschnitten sind."
+    />
+
+    {featuredWork && (
+        <FeaturedWork
+            work={featuredWork}
+            headline="Ausgewählte Projekte"
+            subheadline="Ein Einblick, wie wir durch strategische Partnerschaften messbare Ergebnisse erzielen."
+        />
+    )}
+
+    <DifferentiatorSection
+        headline="Warum InnovationHub?"
+        content="Wir verbinden die Agilität und persönliche Betreuung einer lokalen Agentur mit der strategischen Tiefe und technischen Exzellenz einer führenden Unternehmensberatung. Unser Fokus liegt auf nachhaltigen Partnerschaften, nicht auf kurzfristigen Projekten."
+        imageUrl="/images/content/office-discussion.jpg"
+        imageAlt="Ein Team von Beratern in einem strategischen Meeting in einem modernen Münchner Büro"
+    />
+
+    {testimonial && (
+        <Testimonial testimonial={testimonial} />
+    )}
+
+    <TeamIntro
+        teamMembers={teamMembers}
+        headline="Lernen Sie unsere Experten kennen"
+        subheadline="Unser Erfolg basiert auf der tiefen fachlichen Expertise und dem Engagement unseres Führungsteams."
+        cta={{
+            text: "Unser Team entdecken",
+            href: "/de/ueber-uns"
+        }}
+    />
+
+    <CtaSection
+        headline="Bereit, Ihr Unternehmen zu transformieren?"
+        subheadline="Beginnen Sie das Gespräch, das Ihre digitale Zukunft gestalten wird. Vereinbaren Sie noch heute ein kostenloses, unverbindliches Beratungsgespräch."
+        cta={{
+            text: "Beratungstermin vereinbaren",
+            href: "/de/kontakt"
+        }}
+    />
+
+</BaseLayout>
+```

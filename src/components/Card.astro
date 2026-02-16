@@ -1,0 +1,86 @@
+```astro
+---
+import { type HTMLAttributes } from 'astro/types';
+
+/**
+ * A versatile card component for displaying content like services or case studies.
+ * It follows the design patterns for cards, including hover animations and
+ * support for different content layouts via named slots.
+ *
+ * @prop {string} [href] - If provided, the entire card becomes a clickable `<a>` tag.
+ * @prop {'default' | 'accent-border'} [variant='default'] - The visual style of the card.
+ * @prop {boolean} [animate=true] - If true, applies scroll-reveal animation classes.
+ * @slot image - For a full-width image at the top of the card.
+ * @slot icon - For a smaller icon, typically placed next to the title.
+ * @slot default - The main content area for title, description, etc.
+ * @slot actions - An area at the bottom of the card for links or buttons.
+ */
+type Props = {
+  href?: string;
+  variant?: 'default' | 'accent-border';
+  animate?: boolean;
+} & HTMLAttributes<'a' | 'div'>;
+
+const { 
+  href, 
+  variant = 'default', 
+  animate = true,
+  class: className, 
+  ...rest 
+} = Astro.props;
+
+const Tag = href ? 'a' : 'div';
+
+const baseClasses = [
+  'bg-surface-50',
+  'rounded-md',
+  'shadow-md',
+  'transition-all',
+  'duration-300',
+  'ease-in-out',
+  'hover:shadow-xl',
+  'hover:-translate-y-1',
+  'group',
+  'overflow-hidden',
+  'flex',
+  'flex-col',
+];
+
+if (variant === 'accent-border') {
+  baseClasses.push('border-l-4', 'border-accent-500', 'hover:border-accent-600');
+}
+
+if (animate) {
+  baseClasses.push('animate-on-scroll');
+}
+---
+
+<Tag class:list={[baseClasses, className]} href={href} {...rest}>
+  {Astro.slots.has('image') && (
+    <div class="relative">
+      <slot name="image" />
+    </div>
+  )}
+
+  <div class:list={['p-6 flex flex-col flex-grow', {'pl-5': variant === 'accent-border'}]}>
+    {Astro.slots.has('icon') ? (
+      <div class="flex items-start">
+        <div class="flex-shrink-0">
+          <slot name="icon" />
+        </div>
+        <div class="ml-4 flex-grow">
+          <slot />
+        </div>
+      </div>
+    ) : (
+      <slot />
+    )}
+    
+    {Astro.slots.has('actions') && (
+      <div class="mt-auto pt-4">
+        <slot name="actions" />
+      </div>
+    )}
+  </div>
+</Tag>
+```

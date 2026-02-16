@@ -1,0 +1,133 @@
+```astro
+---
+// src/components/SEO.astro
+
+/**
+ * SEO Component
+ * 
+ * This component manages all critical SEO meta tags for a given page.
+ * It's designed to be used in the <head> of every layout or page.
+ * 
+ * Props:
+ * - title: The specific title of the page (e.g., "About Us").
+ * - description: A concise summary of the page's content for search results.
+ * - lang: The language of the page ('en' or 'de').
+ * - alternateUrl: The URL path for the alternate language version of the page (e.g., '/de/ueber-uns').
+ * - image: Optional. A path to a social sharing image. Defaults to a site-wide OG image.
+ * 
+ * It automatically generates:
+ * - A formatted page title (e.g., "About Us | InnovationHub Solutions GmbH").
+ * - Canonical URL for the current page.
+ * - Open Graph and Twitter Card tags for social sharing.
+ * - hreflang tags for internationalization, linking EN and DE versions.
+ * - Standard favicons and theme color information.
+ */
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  title: string;
+  description: string;
+  lang: 'en' | 'de';
+  alternateUrl?: string;
+  image?: ImageMetadata | string;
+}
+
+const { 
+  title, 
+  description, 
+  lang,
+  alternateUrl,
+  image
+} = Astro.props;
+
+// --- Site-wide Constants ---
+// Sourced from project documentation (docs/core/000-import.md & 001-vision.md)
+const siteName = "InnovationHub Solutions GmbH";
+const siteDescription = "We build custom web applications and deliver expert digital strategy for Bavarian SMEs. Partner with us to translate complex technology into tangible business growth.";
+// A fictional handle for demonstration purposes
+const twitterHandle = "@InnovationHubDE"; 
+
+// Astro.site is the canonical URL configured in `astro.config.mjs`. It's essential for absolute URLs.
+const siteUrl = Astro.site;
+if (!siteUrl) {
+  console.error("Astro.site is not configured in astro.config.mjs. Absolute URLs for SEO will be incorrect.");
+}
+
+// --- Dynamic SEO Variables ---
+
+// 1. Format the page title for consistent branding.
+const formattedTitle = `${title} | ${siteName}`;
+
+// 2. Generate the canonical URL for the current page.
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl);
+
+// 3. Resolve the social sharing image URL. Use a default if none is provided.
+const defaultOgImage = new URL('/social/og-default.jpg', siteUrl).href;
+let socialImageUrl: string;
+let socialImageWidth: number | undefined = 1200;
+let socialImageHeight: number | undefined = 630;
+
+if (image) {
+  if (typeof image === 'string') {
+    socialImageUrl = new URL(image, siteUrl).href;
+    socialImageWidth = undefined; // Dimensions are unknown for simple strings
+    socialImageHeight = undefined;
+  } else {
+    // If an imported image object is passed, we can use its src and dimensions.
+    socialImageUrl = new URL(image.src, siteUrl).href;
+    socialImageWidth = image.width;
+    socialImageHeight = image.height;
+  }
+} else {
+  socialImageUrl = defaultOgImage;
+}
+
+// 4. Set up hreflang variables for internationalization.
+const alternateLang = lang === 'en' ? 'de' : 'en';
+const alternateHref = alternateUrl ? new URL(alternateUrl, siteUrl).href : undefined;
+// The x-default language is German, the company's primary location.
+const xDefaultHref = lang === 'de' ? canonicalUrl.href : alternateHref || canonicalUrl.href;
+---
+<!-- Primary Meta Tags -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{formattedTitle}</title>
+<meta name="description" content={description} />
+<meta name="generator" content={Astro.generator} />
+<link rel="canonical" href={canonicalUrl.href} />
+
+<!-- Internationalization (i18n) / hreflang Tags -->
+<link rel="alternate" hreflang={lang} href={canonicalUrl.href} />
+{alternateHref && <link rel="alternate" hreflang={alternateLang} href={alternateHref} />}
+<link rel="alternate" hreflang="x-default" href={xDefaultHref} />
+
+<!-- Favicon and Theme Information -->
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#142851">
+<meta name="msapplication-TileColor" content="#142851">
+<meta name="theme-color" content="#ffffff">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonicalUrl.href} />
+<meta property="og:title" content={formattedTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={socialImageUrl} />
+<meta property="og:image:alt" content={`Social sharing image for ${title}`} />
+{socialImageWidth && <meta property="og:image:width" content={socialImageWidth.toString()} />}
+{socialImageHeight && <meta property="og:image:height" content={socialImageHeight.toString()} />}
+<meta property="og:site_name" content={siteName} />
+<meta property="og:locale" content={lang === 'en' ? 'en_US' : 'de_DE'} />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalUrl.href} />
+<meta name="twitter:title" content={formattedTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={socialImageUrl} />
+<meta name="twitter:image:alt" content={`Social sharing image for ${title}`} />
+{twitterHandle && <meta name="twitter:site" content={twitterHandle} />}
+```

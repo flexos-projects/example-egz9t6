@@ -1,0 +1,123 @@
+```astro
+---
+import Layout from '../../layouts/Layout.astro';
+import HeroImpact from '../../components/heroes/HeroImpact.astro';
+import ServicesOverview from '../../components/sections/ServicesOverview.astro';
+import DifferentiatorSection from '../../components/sections/DifferentiatorSection.astro';
+import FeaturedWork from '../../components/sections/FeaturedWork.astro';
+import TextImageSection from '../../components/sections/TextImageSection.astro';
+import CtaSection from '../../components/sections/CtaSection.astro';
+
+const services = [
+  {
+    title: "Custom Web Application Development",
+    description: "Building robust, scalable applications tailored precisely to your unique business processes and challenges.",
+    icon: "lucide:code-square",
+    url: "/en/services/custom-web-applications"
+  },
+  {
+    title: "Digital Strategy Consulting",
+    description: "Crafting clear, actionable roadmaps that align technology with your long-term business goals for sustainable growth.",
+    icon: "lucide:compass",
+    url: "/en/services/digital-strategy-consulting"
+  },
+  {
+    title: "Cloud Migration & Infrastructure",
+    description: "Modernizing your IT landscape for enhanced security, scalability, and operational efficiency.",
+    icon: "lucide:cloud",
+    url: "/en/services/cloud-migration"
+  },
+    {
+    title: "E-Commerce Solutions",
+    description: "Developing high-performance e-commerce platforms that drive sales and create seamless customer experiences.",
+    icon: "lucide:shopping-cart",
+    url: "/en/services/ecommerce-solutions"
+  }
+];
+
+const differentiators = [
+  {
+    title: "Local Expertise, Global Standards",
+    description: "Based in Munich, we understand the Bavarian market. We combine regional insight with world-class engineering principles to deliver solutions that are both culturally relevant and technically superior.",
+    icon: "lucide:map-pin"
+  },
+  {
+    title: "A True Partnership",
+    description: "We are more than a vendor; we are an extension of your team. We immerse ourselves in your business to act as a long-term strategic partner, invested in your success.",
+    icon: "lucide:users"
+  },
+  {
+    title: "Pragmatic & Reliable",
+    description: "Our solutions are grounded in reality. We prioritize reliability, clear communication, and a disciplined project management process to deliver on time and on budget, every time.",
+    icon: "lucide:shield-check"
+  }
+]
+
+const featuredCaseStudy = {
+  clientName: "Bavarian Precision Mechanics GmbH",
+  title: "Modernizing a Legacy ERP with a Custom Web Application",
+  imageUrl: "/images/case-studies/bavarian-precision/hero.jpg",
+  url: "/en/work/bavarian-precision-mechanics",
+  summary: "Discover how we replaced an outdated, inefficient system with a modern, high-performance web application, leading to a 40% increase in operational efficiency."
+}
+---
+
+<Layout 
+  title="Your Digital Transformation Partner in Bavaria | InnovationHub Solutions"
+  description="We build custom web applications and deliver expert digital strategy for Bavarian SMEs. Partner with us to translate complex technology into tangible business growth."
+  lang="en"
+>
+  <HeroImpact
+    imageUrl="/images/heroes/home-hero.jpg"
+    altText="Abstract view of a modern architectural ceiling with geometric patterns and light"
+    headline="Your Digital Transformation Partner<br/>for the Bavarian Mittelstand"
+    subheadline="We translate complex technology into tangible business growth, combining local expertise with world-class engineering to build the digital backbone for your success."
+    ctaText="Explore Our Services"
+    ctaUrl="/en/services"
+  />
+
+  <ServicesOverview
+    supertitle="Our Expertise"
+    title="Core Services"
+    subtitle="We provide tailored solutions to navigate your most critical business challenges and unlock sustainable growth."
+    services={services}
+    background="surface-100"
+  />
+
+  <DifferentiatorSection
+    supertitle="Our Approach"
+    title="Why Partner With InnovationHub?"
+    differentiators={differentiators}
+    background="surface-50"
+  />
+  
+  <FeaturedWork
+    supertitle="Proven Results"
+    title="See Our Work in Action"
+    caseStudy={featuredCaseStudy}
+    background="surface-100"
+  />
+
+  <TextImageSection
+    supertitle="The Team"
+    title="Experts Behind Your Success"
+    imageUrl="/images/team/team-collaborating-in-office.jpg"
+    imageAlt="A small group of professionals collaborating around a table in a modern, well-lit office"
+    imagePosition="right"
+    background="surface-50"
+    ctaText="Meet Our Leadership Team"
+    ctaUrl="/en/about"
+  >
+    <p class="text-lg text-surface-900/90 mb-6">Our strength lies in our team of seasoned strategists and engineers. Led by founders with deep academic and technical backgrounds, we provide the expertise of a large consultancy with the dedicated focus and partnership of a boutique firm.</p>
+    <p class="text-lg text-surface-900/90">We believe that the best results come from a close, collaborative relationship, ensuring our solutions are not just technically excellent, but perfectly aligned with your business culture.</p>
+  </TextImageSection>
+
+  <CtaSection
+    title="Ready to Start Your Digital Transformation?"
+    subtitle="Let's discuss how our expertise can drive your next success story. Schedule a complimentary, no-obligation consultation with our team today."
+    buttonText="Schedule a Free Consultation"
+    buttonUrl="/en/contact"
+  />
+
+</Layout>
+```

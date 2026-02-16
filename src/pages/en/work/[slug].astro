@@ -1,0 +1,200 @@
+```astro
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import Testimonial from '../../../components/patterns/Testimonial.astro';
+import CtaBanner from '../../../components/patterns/CtaBanner.astro';
+import CaseStudyCard from '../../../components/cards/CaseStudyCard.astro';
+import Badge from '../../../components/ui/Badge.astro';
+
+export async function getStaticPaths() {
+  const allCaseStudies = await getCollection('caseStudies', ({ id }) => {
+    return id.startsWith('en/');
+  });
+  return allCaseStudies.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+type Props = {
+  entry: CollectionEntry<'caseStudies'>;
+};
+
+const { entry } = Astro.props;
+const { Content: ChallengeContent } = await entry.data.challenge.render();
+const { Content: SolutionContent } = await entry.data.solution.render();
+const { Content: ImpactContent } = await entry.data.impact.render();
+
+// Mock fetching related data as per content model
+const testimonialData = entry.data.testimonial ? {
+    quote: "The strategic clarity they provided was transformative. Their insights were instrumental in navigating our market challenges and positioned us for significant growth.",
+    author_name: "Dr. Anya Sharma",
+    author_title: "CEO, Tech Innovators Inc.",
+    client_company: "Tech Innovators Inc.",
+    client_photo_url: "https://i.pravatar.cc/150?u=anya-sharma"
+} : null;
+
+// Fetch a few other case studies to show at the bottom
+const otherCaseStudies = (await getCollection('caseStudies', ({ id }) => {
+    return id.startsWith('en/') && id !== entry.id;
+})).slice(0, 2);
+
+const seoTitle = `${entry.data.client_name} Case Study: ${entry.data.impact_statistic} | InnovationHub Solutions`;
+const seoDescription = `See how we helped ${entry.data.client_name} solve their business challenges with our ${entry.data.services_used.join(', ')} services, resulting in tangible success.`;
+---
+<BaseLayout title={seoTitle} description={seoDescription}>
+  <article>
+    <!-- Minimal Hero (Pattern 2.3) -->
+    <header class="py-24 md:py-32 bg-surface-50 text-center">
+        <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
+            <div class="max-w-4xl mx-auto animate-on-scroll">
+                <p class="font-inter text-base font-medium text-accent-500 mb-2">{entry.data.client_name}</p>
+                <h1 class="font-inter text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight text-primary-700 mb-4">
+                    {entry.data.project_title}
+                </h1>
+                <p class="font-lora text-lg md:text-xl text-surface-900 opacity-90 max-w-3xl mx-auto">
+                    {entry.data.project_summary}
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Section with Sidebar -->
+    <section class="py-16 md:py-24 lg:py-32 bg-surface-100">
+      <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
+        <div class="lg:grid lg:grid-cols-12 lg:gap-16">
+          <!-- Meta Info Sidebar -->
+          <aside class="lg:col-span-4 xl:col-span-3 mb-12 lg:mb-0">
+            <div class="sticky top-28 space-y-8">
+              <div class="animate-on-scroll">
+                <h2 class="font-inter text-sm font-semibold uppercase tracking-wider text-primary-700">Client</h2>
+                <p class="font-lora text-lg mt-1 text-surface-900">{entry.data.client_name}</p>
+              </div>
+              <div class="animate-on-scroll" style="--delay: 100ms;">
+                <h2 class="font-inter text-sm font-semibold uppercase tracking-wider text-primary-700">Industry</h2>
+                <p class="font-lora text-lg mt-1 text-surface-900">{entry.data.industry}</p>
+              </div>
+              <div class="animate-on-scroll" style="--delay: 200ms;">
+                <h2 class="font-inter text-sm font-semibold uppercase tracking-wider text-primary-700">Services</h2>
+                <div class="flex flex-wrap gap-2 mt-2">
+                  {entry.data.services_used.map(service => (
+                    <Badge text={service} />
+                  ))}
+                </div>
+              </div>
+              <div class="animate-on-scroll" style="--delay: 300ms;">
+                <h2 class="font-inter text-sm font-semibold uppercase tracking-wider text-primary-700">Key Result</h2>
+                <p class="font-inter text-3xl font-bold mt-1 text-accent-500">{entry.data.impact_statistic}</p>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Story Content -->
+          <div class="lg:col-span-8 xl:col-span-9 prose-styles">
+            <div class="animate-on-scroll">
+              <h2 class="font-inter text-3xl md:text-4xl font-semibold text-primary-700 mb-6">The Challenge</h2>
+              <ChallengeContent />
+            </div>
+
+            <div class="my-16 md:my-20 animate-on-scroll">
+              <Image 
+                src={entry.data.featured_image} 
+                alt={`Screenshot of the solution for ${entry.data.client_name}`}
+                width={1600}
+                height={900}
+                format="webp"
+                quality={80}
+                class="w-full h-auto rounded-sm shadow-lg border border-surface-200"
+              />
+            </div>
+
+            <div class="animate-on-scroll">
+              <h2 class="font-inter text-3xl md:text-4xl font-semibold text-primary-700 mb-6">The Solution</h2>
+              <SolutionContent />
+            </div>
+            
+            <div class="my-16 md:my-20 animate-on-scroll">
+              <Image 
+                src={entry.data.gallery && entry.data.gallery.length > 0 ? entry.data.gallery[0] : 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'} 
+                alt={`Diagram or mockup from the ${entry.data.client_name} project`}
+                width={1600}
+                height={900}
+                format="webp"
+                quality={80}
+                class="w-full h-auto rounded-sm shadow-lg border border-surface-200"
+              />
+            </div>
+
+            <div class="animate-on-scroll">
+              <h2 class="font-inter text-3xl md:text-4xl font-semibold text-primary-700 mb-6">The Impact</h2>
+              <ImpactContent />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Testimonial Section (Pattern 3.4) -->
+    {testimonialData && (
+        <Testimonial 
+            quote={testimonialData.quote}
+            authorName={testimonialData.author_name}
+            authorTitle={testimonialData.author_title}
+            avatarUrl={testimonialData.client_photo_url}
+        />
+    )}
+
+    <!-- More Case Studies -->
+    {otherCaseStudies.length > 0 && (
+        <section class="py-16 md:py-24 lg:py-32 bg-surface-100">
+            <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
+                <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16 animate-on-scroll">
+                    <h2 class="font-inter text-3xl md:text-4xl font-semibold text-primary-700">Explore More Work</h2>
+                    <p class="font-lora text-lg md:text-xl mt-4 text-surface-900">See how we've helped other innovative companies achieve their goals.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    {otherCaseStudies.map((study, index) => (
+                        <div class="animate-on-scroll" style={`--delay: ${index * 150}ms;`}>
+                           <CaseStudyCard caseStudy={study} lang="en" />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    )}
+
+    <!-- CTA Section -->
+    <CtaBanner 
+      headline="Ready to start your own success story?"
+      subtext="Connect with our experts today to discuss tailored strategies for your unique challenges."
+      buttonText="Schedule a Consultation"
+      buttonUrl="/en/contact"
+      variant="accent"
+    />
+
+  </article>
+</BaseLayout>
+
+<style is:global>
+  .prose-styles {
+    @apply font-lora text-lg text-surface-900 leading-8;
+  }
+  .prose-styles h3 {
+    @apply font-inter text-2xl md:text-3xl font-semibold text-primary-700 mt-12 mb-4;
+  }
+  .prose-styles p {
+    @apply mb-6;
+  }
+  .prose-styles ul {
+    @apply list-disc list-outside pl-6 space-y-3 mb-6;
+  }
+  .prose-styles strong {
+    @apply font-bold;
+  }
+  .prose-styles a {
+    @apply text-accent-600 hover:text-accent-700 transition-colors duration-300;
+  }
+</style>
+```

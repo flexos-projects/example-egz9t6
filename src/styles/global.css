@@ -1,0 +1,70 @@
+```css
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Lora:wght@400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-surface-50 text-surface-900 antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-inter text-primary-700;
+  }
+
+  p,
+  blockquote,
+  li,
+  address {
+    @apply font-lora;
+  }
+}
+
+@layer utilities {
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 500ms ease-in-out forwards;
+  }
+
+  /* For native <details> accordion icon */
+  details > summary {
+    list-style: none;
+  }
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+  details[open] .details-icon {
+    transform: rotate(45deg);
+  }
+}
+```

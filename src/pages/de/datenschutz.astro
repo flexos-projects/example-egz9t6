@@ -1,0 +1,119 @@
+```astro
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AnimateOnScroll from '../../components/AnimateOnScroll.astro';
+
+const lastUpdated = new Date().toLocaleDateString('de-DE', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout
+  title="Datenschutzerklärung | InnovationHub Solutions GmbH"
+  description="Erfahren Sie, wie die InnovationHub Solutions GmbH Ihre persönlichen Daten sammelt, verwendet und schützt, um Ihre Privatsphäre zu gewährleisten."
+  language="de"
+>
+  <main>
+    <!-- Minimal Hero -->
+    <section class="py-24 md:py-32 bg-surface-100 text-center">
+      <div class="mx-auto max-w-7xl px-4 md:px-8">
+        <AnimateOnScroll>
+          <h1 class="font-inter text-4xl md:text-5xl font-semibold leading-tight text-primary-700 mb-4">
+            Datenschutzerklärung
+          </h1>
+          <p class="font-lora text-lg text-surface-900 opacity-90">
+            Zuletzt aktualisiert: {lastUpdated}
+          </p>
+        </AnimateOnScroll>
+      </div>
+    </section>
+
+    <!-- Privacy Policy Content Section -->
+    <section class="py-16 md:py-24 bg-surface-50">
+      <div class="mx-auto max-w-4xl px-4 md:px-8">
+        <div class="space-y-8">
+          <AnimateOnScroll>
+            <h2 class="font-inter text-3xl md:text-4xl font-semibold text-primary-700">
+              1. Datenschutz auf einen Blick
+            </h2>
+            <h3 class="font-inter text-xl md:text-2xl font-semibold text-primary-700 mt-6 mb-4">
+              Allgemeine Hinweise
+            </h3>
+            <p class="font-lora text-lg text-surface-900 mb-4 leading-relaxed">
+              Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie unsere Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können. Ausführliche Informationen zum Thema Datenschutz entnehmen Sie unserer unter diesem Text aufgeführten Datenschutzerklärung.
+            </p>
+          </AnimateOnScroll>
+          
+          <AnimateOnScroll animationDelay="100ms">
+            <h2 class="font-inter text-3xl md:text-4xl font-semibold text-primary-700 mt-12">
+              2. Verantwortliche Stelle
+            </h2>
+            <p class="font-lora text-lg text-surface-900 mb-4 leading-relaxed">
+              Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:
+            </p>
+            <address class="font-lora text-lg text-surface-900 not-italic leading-relaxed">
+              InnovationHub Solutions GmbH<br />
+              Musterstraße 12<br />
+              80333 München<br />
+              Deutschland
+            </address>
+            <p class="font-lora text-lg text-surface-900 my-4 leading-relaxed">
+              Telefon: +49 (0)89 1234567<br />
+              E-Mail: <a href="mailto:datenschutz@innovationhub-solutions.de" class="text-accent-600 hover:text-accent-700 underline transition-colors duration-300">datenschutz@innovationhub-solutions.de</a>
+            </p>
+          </AnimateOnScroll>
+
+          <AnimateOnScroll animationDelay="100ms">
+            <h2 class="font-inter text-3xl md:text-4xl font-semibold text-primary-700 mt-12">
+              3. Erfassung von Daten auf unserer Website
+            </h2>
+            <h3 class="font-inter text-xl md:text-2xl font-semibold text-primary-700 mt-6 mb-4">
+              Cookies
+            </h3>
+            <p class="font-lora text-lg text-surface-900 mb-4 leading-relaxed">
+              Unsere Internetseiten verwenden so genannte „Cookies“. Cookies sind kleine Textdateien und richten auf Ihrem Endgerät keinen Schaden an. Sie werden entweder vorübergehend für die Dauer einer Sitzung (Session-Cookies) oder dauerhaft (permanente Cookies) auf Ihrem Endgerät gespeichert. Session-Cookies werden nach Ende Ihres Besuchs automatisch gelöscht. Permanente Cookies bleiben auf Ihrem Endgerät gespeichert, bis Sie diese selbst löschen oder eine automatische Löschung durch Ihren Webbrowser erfolgt.
+            </p>
+            <h3 class="font-inter text-xl md:text-2xl font-semibold text-primary-700 mt-6 mb-4">
+              Kontaktformular
+            </h3>
+            <p class="font-lora text-lg text-surface-900 mb-4 leading-relaxed">
+              Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.
+            </p>
+          </AnimateOnScroll>
+
+          <AnimateOnScroll animationDelay="100ms">
+            <h2 class="font-inter text-3xl md:text-4xl font-semibold text-primary-700 mt-12">
+              4. Analyse-Tools und Werbung
+            </h2>
+            <h3 class="font-inter text-xl md:text-2xl font-semibold text-primary-700 mt-6 mb-4">
+              Vercel Analytics
+            </h3>
+            <p class="font-lora text-lg text-surface-900 mb-4 leading-relaxed">
+              Diese Website nutzt Vercel Analytics, einen Webanalysedienst der Vercel Inc., zur Analyse der Website-Nutzung. Vercel Analytics verwendet keine Cookies und erfasst keine personenbezogenen Daten, die eine Identifizierung des Nutzers ermöglichen. Es werden lediglich aggregierte, anonyme Daten über Seitenaufrufe und Besucherquellen erfasst, um die Leistung unserer Website zu verbessern.
+            </p>
+          </AnimateOnScroll>
+
+          <AnimateOnScroll animationDelay="100ms">
+            <h2 class="font-inter text-3xl md:text-4xl font-semibold text-primary-700 mt-12">
+              5. Ihre Rechte als betroffene Person
+            </h2>
+            <p class="font-lora text-lg text-surface-900 mb-4 leading-relaxed">
+              Sie haben im Rahmen der geltenden gesetzlichen Bestimmungen jederzeit das Recht auf unentgeltliche Auskunft über Ihre gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger und den Zweck der Datenverarbeitung und ggf. ein Recht auf Berichtigung, Sperrung oder Löschung dieser Daten. Hierzu sowie zu weiteren Fragen zum Thema personenbezogene Daten können Sie sich jederzeit unter der im Impressum angegebenen Adresse an uns wenden.
+            </p>
+            <ul class="list-disc list-inside space-y-2 mb-4 pl-4 font-lora text-lg text-surface-900 leading-relaxed">
+              <li>Recht auf Auskunft (Art. 15 DSGVO)</li>
+              <li>Recht auf Berichtigung (Art. 16 DSGVO)</li>
+              <li>Recht auf Löschung („Recht auf Vergessenwerden“) (Art. 17 DSGVO)</li>
+              <li>Recht auf Einschränkung der Verarbeitung (Art. 18 DSGVO)</li>
+              <li>Recht auf Datenübertragbarkeit (Art. 20 DSGVO)</li>
+              <li>Widerspruchsrecht (Art. 21 DSGVO)</li>
+            </ul>
+          </AnimateOnScroll>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+```

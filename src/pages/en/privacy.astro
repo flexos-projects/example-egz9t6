@@ -1,0 +1,101 @@
+```astro
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MinimalHero from '../../components/heros/MinimalHero.astro';
+
+const title = "Privacy Policy | Data Protection | InnovationHub Solutions";
+const description = "Read the privacy policy of InnovationHub Solutions detailing how we collect, use, and protect your personal data.";
+---
+<BaseLayout title={title} description={description}>
+  <MinimalHero>
+    <h1 
+      class="font-inter text-4xl md:text-5xl font-semibold leading-tight text-primary-700 mb-4" 
+      slot="title"
+    >
+      Privacy Policy
+    </h1>
+    <p 
+      class="font-lora text-lg md:text-xl text-surface-900 opacity-90"
+      slot="subtitle"
+    >
+      Your privacy is important to us. This policy explains how we handle your personal data.
+    </p>
+  </MinimalHero>
+
+  <section class="py-16 md:py-24 bg-surface-50">
+    <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
+      <div class="prose prose-lg lg:prose-xl max-w-4xl mx-auto opacity-0 translate-y-6 motion-safe:animate-[fade-in-up_500ms_ease-out_forwards]">
+        <p class="text-sm text-surface-900/60">Last updated: May 20, 2024</p>
+        
+        <h2>1. Introduction</h2>
+        <p>InnovationHub Solutions GmbH ("we", "us", "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website. Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the site.</p>
+        
+        <h2>2. Data We Collect</h2>
+        <p>We may collect information about you in a variety of ways. The information we may collect on the Site includes:</p>
+        
+        <h3>Personal Data</h3>
+        <p>Personally identifiable information, such as your name, company name, email address, and telephone number, that you voluntarily give to us when you fill out our contact form. You are under no obligation to provide us with personal information of any kind; however, your refusal to do so may prevent you from using certain features of the Site.</p>
+        
+        <h3>Derivative Data</h3>
+        <p>Information our servers automatically collect when you access the Site, such as your IP address, your browser type, your operating system, your access times, and the pages you have viewed directly before and after accessing the Site. This information is used for internal analytics purposes and does not personally identify you.</p>
+
+        <h2>3. How We Use Your Data</h2>
+        <p>Having accurate information about you permits us to provide you with a smooth, efficient, and customized experience. Specifically, we may use information collected about you via the Site to:</p>
+        <ul>
+            <li>Respond to your inquiries and support requests.</li>
+            <li>Send you administrative information, such as updates on our services or changes to our policies.</li>
+            <li>Monitor and analyze usage and trends to improve your experience with the Site.</li>
+            <li>Prevent fraudulent transactions, monitor against theft, and protect against criminal activity.</li>
+        </ul>
+
+        <h2>4. Disclosure of Your Information</h2>
+        <p>We do not sell, rent, or lease your personal information to third parties. We may share information we have collected about you in certain situations. Your information may be disclosed as follows:</p>
+        <ul>
+            <li><strong>By Law or to Protect Rights:</strong> If we believe the release of information about you is necessary to respond to legal process, to investigate or remedy potential violations of our policies, or to protect the rights, property, and safety of others, we may share your information as permitted or required by any applicable law, rule, or regulation.</li>
+            <li><strong>Third-Party Service Providers:</strong> We may share your information with third parties that perform services for us or on our behalf, including data analysis, hosting services, and customer service.</li>
+        </ul>
+
+        <h2>5. Cookies and Tracking Technologies</h2>
+        <p>We may use cookies and other tracking technologies on the Site to help customize the Site and improve your experience. When you access the Site, your personal information is not collected through the use of tracking technology. Most browsers are set to accept cookies by default. You can remove or reject cookies, but be aware that such action could affect the availability and functionality of the Site.</p>
+
+        <h2>6. Your Rights Regarding Your Personal Data</h2>
+        <p>In accordance with GDPR and other applicable data protection laws, you have the following rights:</p>
+        <ul>
+            <li>The right to access – You have the right to request copies of your personal data.</li>
+            <li>The right to rectification – You have the right to request that we correct any information you believe is inaccurate.</li>
+            <li>The right to erasure – You have the right to request that we erase your personal data, under certain conditions.</li>
+            <li>The right to restrict processing – You have the right to request that we restrict the processing of your personal data, under certain conditions.</li>
+        </ul>
+        <p>To exercise these rights, please contact us using the contact information provided below.</p>
+        
+        <h2>7. Contact Us</h2>
+        <p>If you have questions or comments about this Privacy Policy, please contact our Data Protection Officer at:</p>
+        <p>
+            InnovationHub Solutions GmbH<br>
+            Attn: Data Protection Officer<br>
+            Musterstraße 12, 80333 München, Germany<br>
+            <a href="mailto:privacy@innovationhub-solutions.de" class="text-accent-600 hover:text-accent-700 transition-colors duration-300">privacy@innovationhub-solutions.de</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .prose h2 {
+    @apply font-inter text-3xl md:text-4xl font-semibold text-primary-700 mb-4 mt-12;
+  }
+  .prose h3 {
+    @apply font-inter text-2xl font-semibold text-primary-700 mb-3 mt-8;
+  }
+  .prose p, .prose ul li {
+    @apply font-lora text-lg text-surface-900 leading-loose;
+  }
+  .prose a {
+    @apply font-lora text-accent-600 hover:text-accent-700 transition-colors duration-300;
+  }
+  .prose ul {
+    @apply list-disc pl-8 space-y-2 my-6;
+  }
+</style>
+```

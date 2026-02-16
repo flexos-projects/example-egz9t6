@@ -1,0 +1,18 @@
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" role="img">
+  <title>Example Consulting Group Logo</title>
+  <style>
+    path {
+      fill: #142851; /* primary-700 */
+    }
+    @media (prefers-color-scheme: dark) {
+      path {
+        fill: #FFFFFF; /* surface-50 */
+      }
+    }
+  </style>
+  <g transform="translate(10.88, 0)">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M14.24 36V0H0V36H14.24ZM7.6 30.2V5.8H6.64V30.2H7.6Z"/>
+  </g>
+</svg>
+```

@@ -1,0 +1,86 @@
+```astro
+---
+import Header from '~/components/navigation/Header.astro';
+import Footer from '~/components/navigation/Footer.astro';
+
+// Using Astro's i18n features, Astro.currentLocale will be 'de' or 'en'
+const lang = Astro.currentLocale || 'en';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { 
+  title, 
+  description = "We build custom web applications and deliver expert digital strategy for Bavarian SMEs. Partner with us to translate complex technology into tangible business growth." 
+} = Astro.props;
+
+const companyName = "InnovationHub Solutions GmbH";
+const formattedTitle = `${title} | ${companyName}`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+<!DOCTYPE html>
+<html lang={lang} class="scroll-smooth">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+		<title>{formattedTitle}</title>
+		<meta name="description" content={description} />
+
+		<!-- Canonical URL -->
+		<link rel="canonical" href={canonicalURL.href} />
+
+		<!-- Favicon -->
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="theme-color" content="#142851" />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalURL.href} />
+		<meta property="og:title" content={formattedTitle} />
+		<meta property="og:description" content={description} />
+		<!-- <meta property="og:image" content={new URL('/og-image.png', Astro.site).href} /> -->
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={canonicalURL.href} />
+		<meta property="twitter:title" content={formattedTitle} />
+		<meta property="twitter:description" content={description} />
+		<!-- <meta property="twitter:image" content={new URL('/og-image.png', Astro.site).href} /> -->
+
+		<!-- Font Preloading & Loading -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link 
+			rel="preload" 
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" 
+			as="style" 
+			onload="this.onload=null;this.rel='stylesheet'"
+		>
+		<noscript>
+			<link 
+				href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" 
+				rel="stylesheet" 
+				type="text/css"
+			>
+		</noscript>
+
+		<!-- Global Styles -->
+		<link rel="stylesheet" href="/styles/global.css" />
+	</head>
+	<body class="bg-surface-50 text-surface-900 antialiased">
+		<Header />
+		<main class="opacity-0 animate-fade-in">
+			<slot />
+		</main>
+		<Footer />
+		<script>
+			// This is a placeholder for any global client-side scripts if needed in the future.
+			// E.g., analytics, cookie consent, etc.
+		</script>
+	</body>
+</html>
+```

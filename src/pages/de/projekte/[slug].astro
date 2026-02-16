@@ -1,0 +1,167 @@
+```astro
+---
+import { getCollection, getEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import AnimateOnScroll from '../../../components/AnimateOnScroll.astro';
+import CtaSection from '../../../components/CtaSection.astro';
+import Icon from 'astro-icon';
+
+export async function getStaticPaths() {
+  const caseStudies = await getCollection('caseStudies', ({ id }) => id.startsWith('de/'));
+  return caseStudies.map(entry => ({
+    params: { slug: entry.slug.split('/')[1] },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+
+const testimonial = data.testimonial ? await getEntry(data.testimonial) : null;
+const services = data.services_used ? await Promise.all(data.services_used.map(service => getEntry(service))) : [];
+---
+<BaseLayout 
+  title={`${data.client_name} Fallstudie: ${data.project_summary} | InnovationHub`}
+  description={`Sehen Sie, wie wir ${data.client_name} geholfen haben, ${data.challenge.substring(0, 120)}...`}
+  language="de"
+>
+  <article>
+    <!-- Minimal Hero -->
+    <header class="py-24 md:py-32 lg:py-40 bg-surface-50 text-center">
+      <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
+        <AnimateOnScroll>
+          <div class="max-w-4xl mx-auto">
+            <p class="font-inter text-base font-medium text-accent-500 mb-2">{data.client_name}</p>
+            <h1 class="font-inter text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight text-primary-700 mb-4">
+              {data.project_summary}
+            </h1>
+            {data.impact_statistic && (
+              <p class="font-lora text-lg md:text-xl text-surface-900 opacity-90 mt-6">
+                Wichtigstes Ergebnis: <span class="font-semibold text-primary-700">{data.impact_statistic}</span>
+              </p>
+            )}
+          </div>
+        </AnimateOnScroll>
+      </div>
+    </header>
+
+    <!-- Featured Image -->
+    <section class="py-16 md:py-24 bg-surface-100">
+        <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
+            <AnimateOnScroll>
+                <div class="aspect-w-16 aspect-h-9 rounded-sm shadow-lg overflow-hidden">
+                    <Image 
+                        src={data.featured_image.src}
+                        alt={data.featured_image.alt}
+                        widths={[400, 800, 1280]}
+                        sizes="(max-width: 800px) 100vw, 1280px"
+                        class="w-full h-full object-cover"
+                    />
+                </div>
+            </AnimateOnScroll>
+        </div>
+    </section>
+
+    <!-- Main Content Grid -->
+    <div class="py-16 md:py-24 bg-surface-50">
+      <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12 grid lg:grid-cols-12 gap-12">
+        
+        <!-- Sidebar -->
+        <aside class="lg:col-span-4 space-y-8 sticky top-28 self-start">
+            <AnimateOnScroll>
+                <div class="bg-surface-100 p-6 rounded-md">
+                    <h3 class="font-inter text-xl font-semibold text-primary-700 mb-4">Projektdetails</h3>
+                    <dl class="space-y-4">
+                        <div>
+                            <dt class="font-inter text-sm font-medium text-surface-600">Kunde</dt>
+                            <dd class="font-lora text-base text-surface-900 mt-1">{data.client_name}</dd>
+                        </div>
+                        <div>
+                            <dt class="font-inter text-sm font-medium text-surface-600">Branche</dt>
+                            <dd class="font-lora text-base text-surface-900 mt-1">{data.industry}</dd>
+                        </div>
+                        {services.length > 0 && (
+                            <div>
+                                <dt class="font-inter text-sm font-medium text-surface-600">Leistungen</dt>
+                                <dd class="mt-2 flex flex-wrap gap-2">
+                                    {services.map(service => (
+                                        <a href={`/de/leistungen/${service.slug.split('/')[1]}`} class="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium bg-primary-100 text-primary-700 hover:bg-primary-200 transition-colors">
+                                            {service.data.title}
+                                        </a>
+                                    ))}
+                                </dd>
+                            </div>
+                        )}
+                    </dl>
+                </div>
+            </AnimateOnScroll>
+        </aside>
+
+        <!-- Content -->
+        <div class="lg:col-span-8 prose prose-lg lg:prose-xl prose-h2:font-inter prose-h2:font-semibold prose-h2:text-primary-800 prose-h3:font-inter prose-p:font-lora prose-p:leading-relaxed prose-a:text-accent-600 hover:prose-a:text-accent-700 max-w-none">
+          
+          <AnimateOnScroll>
+            <h2 id="challenge">Die Herausforderung</h2>
+            <div class="font-lora text-surface-900 leading-relaxed text-lg">
+                <entry.renderers.Content collection={entry.collection} id={entry.id} />
+            </div>
+          </AnimateOnScroll>
+          
+          <AnimateOnScroll class="mt-12">
+            <h2 id="solution">Die Lösung</h2>
+            <div class="font-lora text-surface-900 leading-relaxed text-lg">
+                <entry.renderers.Content collection={entry.collection} id={entry.id} />
+            </div>
+          </AnimateOnScroll>
+
+          <AnimateOnScroll class="mt-12">
+            <h2 id="impact">Das Ergebnis</h2>
+            <div class="font-lora text-surface-900 leading-relaxed text-lg">
+                <entry.renderers.Content collection={entry.collection} id={entry.id} />
+            </div>
+          </AnimateOnScroll>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Testimonial Section -->
+    {testimonial && (
+      <section class="py-24 md:py-32 bg-surface-100">
+        <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
+          <AnimateOnScroll>
+            <div class="max-w-4xl mx-auto text-center">
+              {testimonial.data.client_logo && (
+                <Image 
+                    src={testimonial.data.client_logo.src}
+                    alt={testimonial.data.client_logo.alt || `${testimonial.data.author_company} logo`}
+                    class="h-16 w-auto mx-auto mb-8 grayscale opacity-60"
+                    width={150}
+                    height={64}
+                />
+              )}
+              <blockquote class="font-lora text-2xl md:text-3xl italic text-surface-900 leading-relaxed">
+                &ldquo;{testimonial.data.quote}&rdquo;
+              </blockquote>
+              <div class="mt-8">
+                <p class="font-inter text-lg font-medium text-primary-700">{testimonial.data.author_name}</p>
+                <p class="font-lora text-base text-surface-600">{testimonial.data.author_title}</p>
+              </div>
+            </div>
+          </AnimateOnScroll>
+        </div>
+      </section>
+    )}
+    
+    <CtaSection
+        headline="Bereit für Ihre eigene Erfolgsgeschichte?"
+        subheadline="Lassen Sie uns besprechen, wie wir Ihre komplexen Herausforderungen in messbare Ergebnisse umwandeln können."
+        buttonText="Eine Beratung vereinbaren"
+        buttonUrl="/de/kontakt"
+        lang="de"
+    />
+
+  </article>
+</BaseLayout>
+```

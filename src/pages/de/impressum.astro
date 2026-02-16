@@ -1,0 +1,103 @@
+```astro
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/heroes/PageHero.astro';
+
+const pageTitle = "Impressum | InnovationHub Solutions";
+const metaDescription = "Finden Sie das rechtlich erforderliche Impressum für InnovationHub Solutions GmbH, einschließlich Firmendetails und Kontaktinformationen.";
+---
+
+<BaseLayout title={pageTitle} description={metaDescription} lang="de">
+  <PageHero
+    title="Impressum"
+    subtitle="Rechtliche Informationen und Angaben gemäß § 5 TMG."
+  />
+
+  <section class="py-24 md:py-32 bg-surface-50">
+    <div class="mx-auto max-w-4xl px-4 md:px-8 lg:px-12">
+      <div class="prose-custom animate-on-scroll">
+        <h2>Angaben gemäß § 5 TMG</h2>
+        <p>
+          InnovationHub Solutions GmbH<br />
+          Musterstraße 12<br />
+          80333 München<br />
+          Deutschland
+        </p>
+
+        <h2>Vertreten durch die Geschäftsführer:</h2>
+        <p>
+          Dr. Anna Müller<br />
+          Markus Schmidt
+        </p>
+
+        <h2>Kontakt</h2>
+        <p>
+          Telefon: +49 (0)89 123 4567 89<br />
+          E-Mail: <a href="mailto:info@innovationhub.de">info@innovationhub.de</a>
+        </p>
+
+        <h2>Registereintrag</h2>
+        <p>
+          Eintragung im Handelsregister.<br />
+          Registergericht: Amtsgericht München<br />
+          Registernummer: HRB 234567
+        </p>
+
+        <h2>Umsatzsteuer-ID</h2>
+        <p>
+          Umsatzsteuer-Identifikationsnummer gemäß §27 a Umsatzsteuergesetz:<br />
+          DE123456789
+        </p>
+
+        <h2>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
+        <p>
+          Dr. Anna Müller<br />
+          Musterstraße 12<br />
+          80333 München
+        </p>
+
+        <h2>Haftungsausschluss (Disclaimer)</h2>
+
+        <h3>Haftung für Inhalte</h3>
+        <p>
+          Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.
+        </p>
+
+        <h3>Haftung für Links</h3>
+        <p>
+          Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.
+        </p>
+
+        <h3>Urheberrecht</h3>
+        <p>
+          Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet. Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .prose-custom h2 {
+    @apply font-inter text-2xl md:text-3xl font-semibold text-primary-700 mt-12 mb-4;
+  }
+  .prose-custom h3 {
+    @apply font-inter text-xl md:text-2xl font-semibold text-primary-700 mt-8 mb-4;
+  }
+  .prose-custom p {
+    @apply font-lora text-lg text-surface-900 leading-relaxed mb-6;
+  }
+  .prose-custom a {
+    @apply text-accent-600 hover:text-accent-700 transition-colors duration-300 ease-in-out;
+    text-decoration: underline;
+    text-decoration-color: theme('colors.accent.200');
+    text-underline-offset: 4px;
+  }
+  .prose-custom a:hover {
+    text-decoration-color: theme('colors.accent.500');
+  }
+  .prose-custom h2:first-child {
+    @apply mt-0;
+  }
+</style>
+```

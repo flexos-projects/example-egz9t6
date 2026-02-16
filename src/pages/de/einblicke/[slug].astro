@@ -1,0 +1,154 @@
+```astro
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CtaBanner from '../../../components/CtaBanner.astro';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import Icon from 'astro-icon/components';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('posts');
+  const germanPosts = allPosts.filter(post => post.data.language === 'de');
+  const teamMembers = await getCollection('teamMembers');
+
+  return germanPosts.map(post => {
+    const author = teamMembers.find(member => member.slug === post.data.author.slug && member.data.language === 'de');
+    return {
+      params: { slug: post.slug },
+      props: { post, author },
+    };
+  });
+}
+
+type Props = {
+  post: CollectionEntry<'posts'>;
+  author: CollectionEntry<'teamMembers'> | undefined;
+};
+
+const { post, author } = Astro.props;
+const { Content } = await post.render();
+
+const { title, summary, publish_date, featured_image, featured_image_alt } = post.data;
+
+const formattedDate = new Date(publish_date).toLocaleDateString('de-DE', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+// Fetch related articles
+const allPosts = await getCollection('posts');
+const relatedPosts = allPosts
+  .filter(p => p.data.language === 'de' && p.slug !== post.slug)
+  .sort((a, b) => b.data.publish_date.valueOf() - a.data.publish_date.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout title={title} description={summary} language="de">
+  <article class="animate-fade-in">
+    <!-- Article Header -->
+    <header class="bg-surface-50 pt-32 pb-16 md:pt-40 md:pb-24 text-center">
+      <div class="mx-auto max-w-4xl px-4 md:px-8">
+        <div class="opacity-0 animate-fade-in-up">
+          <h1 class="font-inter text-4xl md:text-5xl font-bold leading-tight text-primary-700">
+            {title}
+          </h1>
+          <div class="mt-6 flex items-center justify-center space-x-4 text-base text-surface-900">
+            {author && (
+              <div class="flex items-center space-x-3">
+                <Image 
+                  src={author.data.photo}
+                  alt={`Foto von ${author.data.name}`}
+                  width={40}
+                  height={40}
+                  class="h-10 w-10 rounded-full object-cover"
+                />
+                <span class="font-inter font-medium text-primary-700">{author.data.name}</span>
+              </div>
+            )}
+            <span class="text-surface-300">|</span>
+            <time datetime={publish_date.toISOString()} class="font-lora">
+              {formattedDate}
+            </time>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Featured Image -->
+    {featured_image && (
+      <div class="mx-auto max-w-7xl px-4 md:px-8 opacity-0 animate-fade-in-up" style="--delay: 200ms;">
+        <Image 
+          src={featured_image}
+          alt={featured_image_alt}
+          width={1280}
+          height={640}
+          format="webp"
+          quality={80}
+          class="w-full h-auto max-h-[500px] object-cover rounded-sm shadow-lg"
+        />
+      </div>
+    )}
+
+    <!-- Article Body -->
+    <div class="mx-auto max-w-3xl px-4 md:px-8 py-16 md:py-24">
+      <div class="prose prose-lg lg:prose-xl prose-headings:font-inter prose-headings:text-primary-700 prose-p:font-lora prose-p:text-surface-900 prose-a:text-accent-600 prose-a:font-medium prose-a:transition-colors prose-a:duration-300 hover:prose-a:text-accent-700 prose-strong:font-bold prose-strong:text-primary-800 prose-blockquote:font-lora prose-blockquote:border-l-accent-500">
+        <Content />
+      </div>
+    </div>
+
+    <!-- Author Bio Box -->
+    {author && (
+      <section class="bg-surface-50 py-16">
+        <div class="mx-auto max-w-3xl px-4 md:px-8">
+          <div class="flex flex-col sm:flex-row items-center gap-6 rounded-md border border-surface-200 bg-white p-8">
+            <Image
+              src={author.data.photo}
+              alt={`Foto von ${author.data.name}`}
+              width={128}
+              height={128}
+              class="h-24 w-24 sm:h-32 sm:w-32 flex-shrink-0 rounded-full object-cover shadow-md"
+            />
+            <div class="text-center sm:text-left">
+              <h3 class="font-inter text-xl font-semibold text-primary-700">{author.data.name}</h3>
+              <p class="font-lora text-base text-accent-700 mb-2">{author.data.title}</p>
+              <p class="font-lora text-base text-surface-900 leading-relaxed">{author.data.short_bio}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
+  </article>
+
+  <!-- Related Articles -->
+  {relatedPosts.length > 0 && (
+    <section class="py-24 md:py-32 bg-surface-100">
+      <div class="mx-auto max-w-7xl px-4 md:px-8">
+        <h2 class="font-inter text-3xl md:text-4xl font-semibold text-primary-700 text-center mb-12">
+          Weitere Einblicke
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {relatedPosts.map((relatedPost, index) => (
+            <div class="animate-on-scroll" style={`--delay: ${index * 150}ms;`}>
+              <ArticleCard post={relatedPost} locale="de" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- CTA Banner -->
+  <CtaBanner
+    headline="Sind Sie bereit, Ihre Organisation zu transformieren?"
+    subheadline="Kontaktieren Sie unsere Experten noch heute, um maßgeschneiderte Strategien für Ihre einzigartigen Herausforderungen zu besprechen."
+    buttonText="Beratung vereinbaren"
+    buttonUrl="/de/kontakt"
+    bgColor="bg-accent-500"
+    textColor="text-white"
+    buttonPrimaryColor="bg-primary-700"
+    buttonHoverColor="hover:bg-primary-600"
+  />
+</BaseLayout>
+```

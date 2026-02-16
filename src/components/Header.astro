@@ -1,0 +1,150 @@
+```astro
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import Logo from './Logo.astro';
+
+const currentLocale = Astro.currentLocale as 'en' | 'de';
+const otherLocale = currentLocale === 'en' ? 'de' : 'en';
+const otherLocaleUrl = getRelativeLocaleUrl(otherLocale);
+
+const navLinks = {
+  en: [
+    { name: 'Services', href: '/services' },
+    { name: 'Our Work', href: '/work' },
+    { name: 'About Us', href: '/about' },
+    { name: 'Insights', href: '/insights' },
+  ],
+  de: [
+    { name: 'Leistungen', href: '/leistungen' },
+    { name: 'Projekte', href: '/projekte' },
+    { name: 'Über Uns', href: '/ueber-uns' },
+    { name: 'Einblicke', href: '/einblicke' },
+  ],
+};
+
+const contactLink = {
+  en: { name: 'Contact Us', href: '/contact' },
+  de: { name: 'Kontakt', href: '/kontakt' },
+};
+
+const currentNavLinks = navLinks[currentLocale];
+const currentContactLink = contactLink[currentLocale];
+---
+<header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out py-6 text-white" data-is-transparent="true">
+  <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12 flex justify-between items-center">
+    <a href={`/${currentLocale}/`} aria-label="Homepage" class="text-white" id="header-logo-link">
+      <Logo class="h-8 md:h-9" />
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="hidden md:flex items-center">
+      <ul class="flex space-x-8">
+        {currentNavLinks.map(link => (
+          <li>
+            <a href={`/${currentLocale}${link.href}`} class="font-inter font-medium hover:text-accent-500 transition-colors duration-300 ease-in-out">
+              {link.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="flex items-center ml-8">
+        <a href={otherLocaleUrl} class="font-inter font-medium text-sm border border-white/20 hover:border-white/50 rounded-md px-3 py-1 transition-colors duration-300 ease-in-out" aria-label={`Switch to ${otherLocale === 'de' ? 'German' : 'English'}`}>
+          {otherLocale.toUpperCase()}
+        </a>
+        <a href={`/${currentLocale}${currentContactLink.href}`} class="ml-6 bg-accent-500 hover:bg-accent-600 text-white font-inter font-medium py-2 px-4 rounded-md shadow-md transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-0.5">
+          {currentContactLink.name}
+        </a>
+      </div>
+    </nav>
+
+    <!-- Mobile Menu Button -->
+    <button id="mobile-menu-button" class="md:hidden p-2 -mr-2 text-white hover:text-accent-500 transition-colors duration-300 ease-in-out" aria-label="Open menu">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile Menu Overlay -->
+<div id="mobile-menu-overlay" class="fixed inset-0 bg-primary-900/95 backdrop-blur-sm z-40 flex flex-col justify-center items-center text-white transition-opacity duration-300 ease-in-out opacity-0 invisible">
+  <button id="mobile-menu-close" class="absolute top-7 right-4 p-2 text-white hover:text-accent-500 transition-colors duration-300 ease-in-out" aria-label="Close menu">
+    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+  </button>
+  <nav>
+    <ul class="flex flex-col items-center space-y-8">
+      {currentNavLinks.map(link => (
+        <li>
+          <a href={`/${currentLocale}${link.href}`} class="font-inter text-3xl font-semibold hover:text-accent-500 transition-colors duration-300 ease-in-out mobile-nav-link">
+            {link.name}
+          </a>
+        </li>
+      ))}
+      <li>
+        <a href={`/${currentLocale}${currentContactLink.href}`} class="mt-8 bg-accent-500 hover:bg-accent-600 text-white font-inter font-medium py-3 px-6 rounded-md shadow-lg transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-0.5 mobile-nav-link">
+          {currentContactLink.name}
+        </a>
+      </li>
+      <li class="absolute bottom-12">
+        <a href={otherLocaleUrl} class="font-inter font-medium text-base border border-white/20 hover:border-white/50 rounded-md px-4 py-2 transition-colors duration-300 ease-in-out" aria-label={`Switch to ${otherLocale === 'de' ? 'German' : 'English'}`}>
+          Switch to {otherLocale.toUpperCase()}
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const header = document.getElementById('main-header');
+    const logoLink = document.getElementById('header-logo-link');
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const scrollThreshold = 50;
+
+    const handleScroll = () => {
+      if (window.scrollY > scrollThreshold) {
+        if (header.dataset.isTransparent === 'true') {
+          header.classList.add('bg-surface-50', 'shadow-md', 'text-primary-700');
+          header.classList.remove('text-white', 'py-6');
+          header.classList.add('py-4');
+          logoLink.classList.remove('text-white');
+          logoLink.classList.add('text-primary-700');
+          mobileMenuButton.classList.remove('text-white');
+          mobileMenuButton.classList.add('text-primary-700');
+          header.dataset.isTransparent = 'false';
+        }
+      } else {
+        if (header.dataset.isTransparent === 'false') {
+          header.classList.remove('bg-surface-50', 'shadow-md', 'text-primary-700');
+          header.classList.add('text-white', 'py-6');
+          header.classList.remove('py-4');
+          logoLink.classList.add('text-white');
+          logoLink.classList.remove('text-primary-700');
+          mobileMenuButton.classList.add('text-white');
+          mobileMenuButton.classList.remove('text-primary-700');
+          header.dataset.isTransparent = 'true';
+        }
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial check
+
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+    const openMobileMenu = () => {
+      mobileMenuOverlay.classList.remove('opacity-0', 'invisible');
+      document.body.style.overflow = 'hidden';
+    };
+    const closeMobileMenu = () => {
+      mobileMenuOverlay.classList.add('opacity-0', 'invisible');
+      document.body.style.overflow = '';
+    };
+
+    mobileMenuButton.addEventListener('click', openMobileMenu);
+    mobileMenuClose.addEventListener('click', closeMobileMenu);
+    mobileNavLinks.forEach(link => link.addEventListener('click', closeMobileMenu));
+  });
+</script>
+```

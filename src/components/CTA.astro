@@ -1,0 +1,67 @@
+```astro
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  headline: string;
+  subtext: string;
+  buttonText: string;
+  buttonLink: string;
+}
+
+const { 
+  headline = "Ready to Unlock Your Organization's Full Potential?", 
+  subtext = "Connect with our experts today to discuss tailored strategies for your unique challenges.", 
+  buttonText = "Schedule a Consultation", 
+  buttonLink = "/contact" 
+} = Astro.props;
+---
+
+<section class="py-20 md:py-28 bg-accent-500 text-white text-center">
+  <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
+    <div class="cta-animate max-w-4xl mx-auto opacity-0 translate-y-6 transition-all duration-500 ease-out delay-100">
+      <h2 class="font-inter text-3xl md:text-4xl font-semibold leading-tight mb-4">
+        {headline}
+      </h2>
+      <p class="font-lora text-lg md:text-xl mb-8 opacity-90">
+        {subtext}
+      </p>
+      <a 
+        href={buttonLink} 
+        class="inline-flex items-center justify-center bg-primary-700 hover:bg-primary-600 text-white font-inter font-medium py-3 px-6 rounded-md shadow-lg transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surface-50 focus-visible:ring-offset-4 focus-visible:ring-offset-accent-500"
+      >
+        {buttonText}
+        <Icon name="lucide:arrow-right" class="ml-2 w-4 h-4" />
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const animatedElements = document.querySelectorAll('.cta-animate');
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove('opacity-0', 'translate-y-6');
+            entry.target.classList.add('opacity-100', 'translate-y-0');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      animatedElements.forEach(el => {
+        observer.observe(el);
+      });
+    } else {
+      // Fallback for older browsers
+      animatedElements.forEach(el => {
+        el.classList.remove('opacity-0', 'translate-y-6');
+        el.classList.add('opacity-100', 'translate-y-0');
+      });
+    }
+  });
+</script>
+```

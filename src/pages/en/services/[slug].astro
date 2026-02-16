@@ -1,0 +1,125 @@
+```astro
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import MinimalHero from '../../../components/heroes/MinimalHero.astro';
+import FeatureGrid from '../../../components/content/FeatureGrid.astro';
+import TextImageBlock from '../../../components/content/TextImageBlock.astro';
+import CallToAction from '../../../components/cta/CallToAction.astro';
+import CaseStudyCard from '../../../components/cards/CaseStudyCard.astro';
+import { Icon } from 'astro-icon/components';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services', ({ data }) => data.language === 'en');
+  return services.map(service => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+type Props = {
+  service: CollectionEntry<'services'>;
+}
+
+const { service } = Astro.props;
+const { data } = service;
+
+const allCaseStudies = await getCollection('caseStudies', ({ data }) => data.language === 'en');
+const relatedCaseStudies = data.related_case_studies 
+  ? allCaseStudies.filter(study => data.related_case_studies!.includes(study.slug))
+  : [];
+
+const seoTitle = data.seo_title || `${data.title} | InnovationHub Solutions`;
+const seoDescription = data.seo_description || data.summary;
+
+const processImages = [
+  "https://images.unsplash.com/photo-1542744095-291d1f67b221?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Discovery
+  "https://images.unsplash.com/photo-1556740758-90de374c12ad?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Design
+  "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Develop
+  "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Deploy
+];
+---
+
+<BaseLayout title={seoTitle} description={seoDescription}>
+  <MinimalHero
+    title={data.title}
+    subtitle={data.introduction}
+    ctaText="Discuss Your Project"
+    ctaHref="/en/contact"
+  />
+
+  {data.problem_checklist && data.problem_checklist.length > 0 && (
+    <section class="py-16 md:py-24 bg-surface-100">
+      <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
+        <div class="max-w-3xl mx-auto text-center">
+          <h2 class="font-inter text-3xl md:text-4xl font-semibold text-primary-700">Is This Service for You?</h2>
+          <p class="mt-4 font-lora text-lg text-surface-900">This solution is designed for organizations facing challenges like:</p>
+        </div>
+        <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {data.problem_checklist.map((problem, index) => (
+            <div class="flex items-start space-x-4 opacity-0 translate-y-6 motion-safe:animate-[fade-in-up_500ms_ease-out_forwards]" style={`--delay: ${index * 100}ms;`}>
+              <div class="flex-shrink-0 mt-1">
+                <Icon name="lucide:check-circle-2" class="w-6 h-6 text-accent-500" />
+              </div>
+              <div>
+                <p class="font-lora text-base text-surface-900">{problem}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {data.process_steps && data.process_steps.length > 0 && (
+    <section class="py-16 md:py-24 bg-surface-50">
+      <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
+        <div class="max-w-3xl mx-auto text-center mb-12 md:mb-16">
+          <h2 class="font-inter text-3xl md:text-4xl font-semibold text-primary-700">Our Approach</h2>
+          <p class="mt-4 font-lora text-lg text-surface-900">We follow a structured, collaborative process to ensure your project's success from conception to completion.</p>
+        </div>
+        <div class="space-y-16 md:space-y-24">
+          {data.process_steps.map((step, index) => (
+            <TextImageBlock
+              title={step.step_title}
+              imageSrc={processImages[index % processImages.length]}
+              imageAlt={step.step_title}
+              imagePosition={index % 2 === 0 ? 'left' : 'right'}
+            >
+              <p class="font-lora text-lg text-surface-900">
+                {step.step_description}
+              </p>
+            </TextImageBlock>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {relatedCaseStudies.length > 0 && (
+    <section class="py-16 md:py-24 bg-surface-100">
+      <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
+        <div class="max-w-3xl mx-auto text-center mb-12 md:mb-16">
+          <h2 class="font-inter text-3xl md:text-4xl font-semibold text-primary-700">Proven Results</h2>
+          <p class="mt-4 font-lora text-lg text-surface-900">See how we've applied this expertise to deliver tangible results for businesses like yours.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {relatedCaseStudies.map((study, index) => (
+            <div class="opacity-0 translate-y-6 motion-safe:animate-[fade-in-up_500ms_ease-out_forwards]" style={`--delay: ${index * 150}ms;`}>
+              <CaseStudyCard caseStudy={study} lang="en" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <CallToAction
+    title="Ready to Discuss Your Project?"
+    subtitle={`Let's explore how our ${data.title.toLowerCase()} service can help you achieve your business objectives.`}
+    buttonText="Schedule a Consultation"
+    buttonHref="/en/contact"
+  />
+
+</BaseLayout>
+```

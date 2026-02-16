@@ -1,0 +1,162 @@
+```astro
+---
+import { getCollection, getEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import Icon from 'astro-icon';
+import CtaBanner from '../../../components/patterns/CtaBanner.astro';
+
+export async function getStaticPaths() {
+    const allPosts = await getCollection('posts');
+    const englishPosts = allPosts.filter(post => post.id.startsWith('en/'));
+    return englishPosts.map(post => ({
+        params: { slug: post.slug },
+        props: { post },
+    }));
+}
+
+interface Props {
+    post: CollectionEntry<'posts'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const author = post.data.author ? await getEntry(post.data.author) : null;
+
+const formattedDate = new Date(post.data.publish_date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+});
+
+const pageUrl = Astro.url.href;
+const shareText = encodeURIComponent(`Check out this article: ${post.data.title}`);
+---
+
+<BaseLayout title={`${post.data.title} | InnovationHub Solutions`} description={post.data.summary}>
+    <main>
+        <!-- Minimal Hero for Post Title -->
+        <section class="py-24 md:py-32 bg-surface-50 text-center">
+            <div class="mx-auto max-w-7xl px-4 md:px-8">
+                <div class="max-w-3xl mx-auto opacity-0 animate-[fade-in-up_500ms_ease-out_forwards]">
+                    <p class="font-inter text-sm font-medium text-accent-500 uppercase tracking-wider mb-4">Insight Article</p>
+                    <h1 class="font-inter text-4xl md:text-5xl font-semibold leading-tight text-primary-700">
+                        {post.data.title}
+                    </h1>
+                </div>
+            </div>
+        </section>
+
+        <!-- Article -->
+        <article class="pb-24 md:pb-32 bg-surface-50">
+            <div class="mx-auto max-w-3xl px-4 md:px-8">
+                <!-- Author & Date Metadata -->
+                <div class="flex items-center justify-center text-center mb-12 border-b border-surface-200 pb-8 opacity-0 animate-[fade-in-up_500ms_ease-out_forwards] [animation-delay:200ms]">
+                    {author && (
+                        <div class="flex items-center group">
+                            <Image 
+                                src={author.data.photo} 
+                                alt={`Photo of ${author.data.name}`}
+                                width={56} 
+                                height={56} 
+                                class="rounded-full object-cover mr-4 shadow-sm"
+                            />
+                            <div>
+                                <p class="font-inter text-base font-medium text-primary-700">{author.data.name}</p>
+                                <p class="font-lora text-sm text-surface-900 opacity-70">Published on {formattedDate}</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                <!-- Main Content -->
+                <div class="prose prose-lg lg:prose-xl max-w-none opacity-0 animate-[fade-in-up_500ms_ease-out_forwards] [animation-delay:400ms]">
+                    <Content />
+                </div>
+
+                <!-- Social Share -->
+                <div class="mt-16 pt-8 border-t border-surface-200 opacity-0 animate-[fade-in-up_500ms_ease-out_forwards] [animation-delay:600ms]">
+                    <div class="flex items-center justify-center gap-4">
+                        <p class="font-inter text-sm font-medium text-surface-900">Share this article:</p>
+                        <div class="flex gap-2">
+                            <a href={`https://twitter.com/intent/tweet?url=${pageUrl}&text=${shareText}`} target="_blank" rel="noopener noreferrer" class="text-surface-900 hover:text-accent-500 transition-colors duration-300 p-2 rounded-md" aria-label="Share on Twitter">
+                                <Icon name="lucide:twitter" class="w-5 h-5" />
+                            </a>
+                            <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${pageUrl}&title=${encodeURIComponent(post.data.title)}`} target="_blank" rel="noopener noreferrer" class="text-surface-900 hover:text-accent-500 transition-colors duration-300 p-2 rounded-md" aria-label="Share on LinkedIn">
+                                 <Icon name="lucide:linkedin" class="w-5 h-5" />
+                            </a>
+                            <a href={`mailto:?subject=${encodeURIComponent(post.data.title)}&body=${shareText}%0A%0A${pageUrl}`} class="text-surface-900 hover:text-accent-500 transition-colors duration-300 p-2 rounded-md" aria-label="Share via Email">
+                                 <Icon name="lucide:mail" class="w-5 h-5" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        
+        <CtaBanner
+            headline="Ready to discuss your strategy?"
+            subtext="Connect with our experts today to explore how these insights can be applied to your unique challenges."
+            buttonText="Schedule a Consultation"
+            buttonUrl="/en/contact"
+            variant="accent"
+        />
+
+    </main>
+</BaseLayout>
+
+<style is:global>
+    .prose {
+        --tw-prose-body: theme(colors.surface.900);
+        --tw-prose-headings: theme(colors.primary.700);
+        --tw-prose-lead: theme(colors.surface.900);
+        --tw-prose-links: theme(colors.accent.600);
+        --tw-prose-bold: theme(colors.surface.900);
+        --tw-prose-counters: theme(colors.surface.900);
+        --tw-prose-bullets: theme(colors.surface.300);
+        --tw-prose-hr: theme(colors.surface.200);
+        --tw-prose-quotes: theme(colors.surface.900);
+        --tw-prose-quote-borders: theme(colors.accent.300);
+        --tw-prose-captions: theme(colors.surface.900 / 0.7);
+        --tw-prose-code: theme(colors.primary.700);
+        --tw-prose-pre-code: theme(colors.primary.100);
+        --tw-prose-pre-bg: theme(colors.primary.900);
+        --tw-prose-th-borders: theme(colors.surface.300);
+        --tw-prose-td-borders: theme(colors.surface.200);
+    }
+
+    .prose :where(p, ul, ol, li):not(:where([class~="not-prose"] *)) {
+        font-family: theme('fontFamily.lora');
+        line-height: 1.75rem; /* Equivalent to prose-base */
+    }
+
+    .prose-lg :where(p, ul, ol, li):not(:where([class~="not-prose"] *)) {
+        font-size: 1.125rem; /* text-lg */
+        line-height: 1.75rem;
+    }
+
+    .prose-xl :where(p, ul, ol, li):not(:where([class~="not-prose"] *)) {
+        font-size: 1.25rem; /* text-xl */
+        line-height: 1.75rem;
+    }
+
+    .prose :where(h1, h2, h3, h4, h5, h6):not(:where([class~="not-prose"] *)) {
+        font-family: theme('fontFamily.inter');
+        font-weight: 600;
+    }
+
+    .prose :where(blockquote):not(:where([class~="not-prose"] *)) {
+        font-family: theme('fontFamily.lora');
+        font-style: italic;
+        padding-left: 1rem;
+        border-left-width: 0.25rem;
+    }
+
+    .prose :where(strong):not(:where([class~="not-prose"] *)) {
+        font-family: theme('fontFamily.lora');
+        font-weight: 700;
+    }
+</style>
+```

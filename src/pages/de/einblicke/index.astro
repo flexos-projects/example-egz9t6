@@ -1,0 +1,67 @@
+```astro
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import MinimalHero from '../../../components/heroes/MinimalHero.astro';
+import Section from '../../../components/Section.astro';
+import FeaturedArticleCard from '../../../components/cards/FeaturedArticleCard.astro';
+import ArticleCard from '../../../components/cards/ArticleCard.astro';
+import { SITE_TITLE } from '../../../consts';
+
+const title = `Einblicke | ${SITE_TITLE}`;
+const description = "Expertenartikel und Anleitungen zu kundenspezifischer Software, Cloud-Technologie und digitaler Strategie vom Team der InnovationHub Solutions.";
+
+const allPosts = await getCollection('posts', ({ data }) => data.language === 'de');
+const sortedPosts = allPosts.sort((a, b) => new Date(b.data.publish_date).valueOf() - new Date(a.data.publish_date).valueOf());
+
+const featuredPost = sortedPosts.length > 0 ? sortedPosts[0] : null;
+const otherPosts = sortedPosts.length > 1 ? sortedPosts.slice(1) : [];
+---
+<BaseLayout title={title} description={description} language="de">
+  <MinimalHero
+    title="Einblicke"
+    subtitle="Expertenartikel und Anleitungen zu digitaler Strategie, kundenspezifischer Software und Cloud-Technologie, speziell für den bayerischen Mittelstand."
+  />
+
+  {sortedPosts.length > 0 && featuredPost ? (
+    <Section background="surface-100" class="py-24 md:py-32">
+      <div class="space-y-20 md:space-y-24">
+        <!-- Featured Article -->
+        <FeaturedArticleCard post={featuredPost} />
+
+        <!-- More Articles -->
+        {otherPosts.length > 0 && (
+          <div class="animate-on-scroll">
+            <h2 class="font-inter text-3xl md:text-4xl font-semibold text-primary-700 mb-12 border-b border-surface-200 pb-4">
+              Weitere Artikel
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+              {otherPosts.map((post, index) => (
+                <ArticleCard
+                  post={post}
+                  class:list={['animate-on-scroll']}
+                  style={`--delay: ${index * 100}ms;`}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </Section>
+  ) : (
+    <Section background="surface-100" class="py-24 md:py-32">
+      <div class="text-center max-w-2xl mx-auto">
+        <svg class="mx-auto h-16 w-16 text-surface-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+        </svg>
+        <h2 class="mt-6 font-inter text-2xl font-semibold text-primary-700">
+            Einblicke folgen in Kürze
+        </h2>
+        <p class="mt-4 font-lora text-lg text-surface-900 leading-relaxed">
+            Wir arbeiten daran, wertvolle Inhalte und Expertenanalysen für Sie bereitzustellen. Schauen Sie bald wieder vorbei, um unsere neuesten Artikel zu lesen.
+        </p>
+      </div>
+    </Section>
+  )}
+</BaseLayout>
+```

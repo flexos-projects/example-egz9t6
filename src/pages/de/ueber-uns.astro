@@ -1,0 +1,157 @@
+```astro
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CtaBanner from '../../components/CtaBanner.astro';
+
+// Fetch German team members from the content collection
+const teamMembers = await getCollection('teamMembers', ({ id }) => id.startsWith('de/'));
+
+const page = {
+  title: 'Über Uns: Die Experten hinter InnovationHub Solutions',
+  description: 'Lernen Sie Dr. Anna Müller, Markus Schmidt und Lena Meyer kennen – das Expertenteam, das dem bayerischen Mittelstand hilft, mit Technologie erfolgreich zu sein.',
+  ogImage: '/og-images/ueber-uns.jpg'
+};
+
+const values = [
+  {
+    icon: 'handshake',
+    title: 'Partnerschaft',
+    description: 'Wir sind mehr als nur Berater; wir sind engagierte Partner für Ihren Erfolg. Unser Ansatz basiert auf tiefem Branchen-Know-how und einem kollaborativen Geist.'
+  },
+  {
+    icon: 'search-check',
+    title: 'Sorgfalt',
+    description: 'Unsere strategische Beratung stützt sich auf rigorose Analysen und datengestützte Erkenntnisse, um sicherzustellen, dass unsere Lösungen robust und effektiv sind.'
+  },
+  {
+    icon: 'shield-check',
+    title: 'Zuverlässigkeit',
+    description: 'Wir halten uns an unsere Zusagen. Strukturierte Projektmethoden und transparente Kommunikation gewährleisten eine termingerechte und budgetgerechte Umsetzung.'
+  }
+];
+---
+
+<BaseLayout title={page.title} description={page.description} ogImage={page.ogImage}>
+  <main>
+    <!-- Split Hero (Pattern 2.2) -->
+    <section class="py-20 md:py-32 lg:py-40 bg-surface-50">
+      <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12 grid md:grid-cols-2 items-center gap-12 md:gap-16">
+        <div class="relative opacity-0 translate-y-6 motion-safe:animate-[fade-in-up_700ms_ease-out_forwards]">
+          <Image 
+            src="/assets/images/team-collaboration-light.jpg" 
+            alt="Unser Team in einer strategischen Besprechung in unserem Münchner Büro"
+            width={800}
+            height={900}
+            class="h-[400px] md:h-[500px] lg:h-[600px] w-full object-cover rounded-sm shadow-lg"
+          />
+        </div>
+        <div class="opacity-0 translate-y-6 motion-safe:animate-[fade-in-up_700ms_ease-out_forwards_200ms]">
+          <h1 class="font-inter text-4xl md:text-5xl font-semibold leading-tight text-primary-700 mb-4">
+            Die Experten hinter Ihrem digitalen Erfolg.
+          </h1>
+          <p class="font-lora text-lg md:text-xl text-surface-900 mb-6 leading-relaxed">
+            Wir kombinieren strategische Weitsicht mit technologischer Exzellenz, um maßgeschneiderte Lösungen zu schaffen, die den bayerischen Mittelstand voranbringen.
+          </p>
+          <a href="/de/kontakt" class="inline-flex items-center bg-primary-700 hover:bg-primary-600 text-white font-inter font-medium py-3 px-6 rounded-md shadow-md transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-0.5">
+            Lernen Sie uns kennen
+            <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Story Section (Pattern 3.1 - Image Right) -->
+    <section class="py-16 md:py-24 lg:py-32 bg-surface-100">
+      <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
+        <div class="grid md:grid-cols-2 items-center gap-12 md:gap-20">
+          <div class="opacity-0 translate-y-6 motion-safe:animate-[fade-in-up_500ms_ease-out_forwards]">
+            <h2 class="font-inter text-3xl md:text-4xl font-semibold text-primary-700 mb-4">Unsere Geschichte</h2>
+            <div class="prose prose-lg max-w-none font-lora text-surface-900 space-y-4">
+              <p>
+                InnovationHub Solutions wurde aus der Überzeugung gegründet, dass Technologie für den Mittelstand kein Hindernis, sondern ein entscheidender Wettbewerbsvorteil sein sollte. Unsere Gründer, Dr. Anna Müller und Markus Schmidt, erkannten eine Lücke zwischen unpersönlichen Großkonzernen und limitierten Freelancern.
+              </p>
+              <p>
+                Ihre Vision war es, ein lokales Expertenteam in München zu schaffen, das die Zuverlässigkeit und das tiefe technische Wissen eines etablierten Partners mit der Agilität und dem persönlichen Engagement eines Boutique-Beraters verbindet. Heute sind wir stolz darauf, der vertrauenswürdige digitale Transformationspartner für einige der angesehensten Unternehmen Bayerns zu sein.
+              </p>
+            </div>
+          </div>
+          <div class="md:order-last opacity-0 translate-y-6 motion-safe:animate-[fade-in-up_500ms_ease-out_forwards_200ms]">
+            <Image 
+              src="/assets/images/munich-architecture-detail.jpg" 
+              alt="Moderne Architektur in München, die unsere Designphilosophie widerspiegelt" 
+              width={800} 
+              height={600} 
+              class="h-80 md:h-96 w-full object-cover rounded-sm shadow-md"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Leadership Team Section -->
+    <section class="py-16 md:py-24 lg:py-32 bg-surface-50">
+      <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
+        <div class="max-w-3xl mx-auto text-center mb-12 md:mb-16 opacity-0 translate-y-6 motion-safe:animate-[fade-in-up_500ms_ease-out_forwards]">
+          <h2 class="font-inter text-3xl md:text-4xl font-semibold text-primary-700">Unser Führungsteam</h2>
+          <p class="font-lora text-lg md:text-xl text-surface-900 mt-4 leading-relaxed">
+            Die treibende Kraft hinter unserer Expertise. Eine Kombination aus akademischer Strenge, technischer Meisterschaft und operativem Geschick.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+          {teamMembers.map((member, index) => (
+            <div class={`bg-surface-50 rounded-sm shadow-lg p-8 text-center flex flex-col items-center border-t-4 border-accent-500 transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 opacity-0 translate-y-6 motion-safe:animate-[fade-in-up_500ms_ease-out_forwards]`} style={`--delay: ${index * 150}ms;`}>
+              <Image
+                src={member.data.photo}
+                alt={`Porträt von ${member.data.name}`}
+                width={128}
+                height={128}
+                class="w-32 h-32 rounded-full object-cover mx-auto mb-6 ring-4 ring-surface-100"
+              />
+              <h3 class="font-inter text-2xl font-semibold text-primary-700">{member.data.name}</h3>
+              <p class="font-inter text-accent-700 font-medium mb-4">{member.data.title}</p>
+              <div class="prose font-lora text-surface-900 text-sm flex-grow">
+                <p>{member.data.bio}</p>
+              </div>
+              {member.data.linkedin_url && (
+                <a href={member.data.linkedin_url} target="_blank" rel="noopener noreferrer" class="mt-6 text-primary-700 hover:text-accent-500 transition-colors duration-300 text-2xl" aria-label={`LinkedIn Profil von ${member.data.name}`}>
+                  <i class="fab fa-linkedin"></i>
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Values Section (Pattern 3.2) -->
+    <section class="py-16 md:py-24 lg:py-32 bg-surface-100">
+      <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
+        <h2 class="font-inter text-3xl md:text-4xl font-semibold text-primary-700 text-center mb-12 md:mb-16 opacity-0 translate-y-6 motion-safe:animate-[fade-in-up_500ms_ease-out_forwards]">Unsere Werte</h2>
+        <div class="grid gap-10 md:gap-12 md:grid-cols-3">
+          {values.map((value, index) => (
+            <div class={`flex flex-col items-center text-center opacity-0 translate-y-6 motion-safe:animate-[fade-in-up_500ms_ease-out_forwards]`} style={`--delay: ${index * 150}ms;`}>
+              <div class="flex items-center justify-center h-16 w-16 rounded-full bg-primary-700 text-white mb-5 shadow-md">
+                <i class={`fa-solid fa-${value.icon} text-2xl`}></i>
+              </div>
+              <h3 class="font-inter text-xl font-semibold text-primary-700 mb-2">{value.title}</h3>
+              <p class="font-lora text-base text-surface-900 leading-relaxed">{value.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <CtaBanner
+      lang="de"
+      headline="Bereit, Ihr Unternehmen zu transformieren?"
+      subheadline="Kontaktieren Sie unsere Experten noch heute, um maßgeschneiderte Strategien für Ihre einzigartigen Herausforderungen zu besprechen."
+      buttonText="Ein Beratungsgespräch vereinbaren"
+      buttonUrl="/de/kontakt"
+    />
+  </main>
+</BaseLayout>
+```

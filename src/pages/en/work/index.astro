@@ -1,0 +1,177 @@
+```astro
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CtaSection from '../../../components/sections/CtaSection.astro';
+import ArrowRight from '../../../components/icons/ArrowRight.astro';
+
+const title = "Our Work: Proven Results for Bavarian Businesses | InnovationHub Solutions";
+const description = "See our portfolio of custom web apps, digital strategy projects, and cloud solutions. Real results for manufacturing, retail, and professional services.";
+
+const caseStudies = (await getCollection('caseStudies')).filter(
+  (study) => study.slug.startsWith('en/')
+);
+
+// Extract unique categories for filtering
+const allCategories = new Set<string>();
+caseStudies.forEach(study => {
+  if (study.data.industry) allCategories.add(study.data.industry);
+  study.data.services_used.forEach(service => allCategories.add(service.data.title));
+});
+const sortedCategories = Array.from(allCategories).sort();
+---
+
+<BaseLayout title={title} description={description}>
+  <main>
+    <!-- Minimal Hero (Pattern 2.3) -->
+    <section class="py-24 md:py-32 lg:py-40 bg-surface-50 text-center">
+      <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
+        <div class="max-w-3xl mx-auto animate-on-scroll">
+          <h1 class="font-inter text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight text-primary-700 mb-4">
+            Our Work
+          </h1>
+          <p class="font-lora text-lg md:text-xl text-surface-900 opacity-90 mb-8">
+            A showcase of our successful partnerships and the tangible results we've delivered. Explore how we translate complex challenges into strategic success stories.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filterable Grid Section -->
+    <section class="py-16 md:py-24 bg-surface-100">
+      <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
+        <!-- Filter Controls -->
+        <div id="filter-controls" class="flex flex-wrap justify-center gap-2 md:gap-4 mb-12 animate-on-scroll" style="--delay: 200ms;">
+          <button data-filter="all" class="filter-btn active font-inter font-medium py-2 px-4 rounded-md text-sm transition-all duration-300 ease-in-out">
+            All Projects
+          </button>
+          {sortedCategories.map(category => (
+            <button data-filter={category.toLowerCase().replace(/\s+/g, '-')} class="filter-btn font-inter font-medium py-2 px-4 rounded-md text-sm transition-all duration-300 ease-in-out">
+              {category}
+            </button>
+          ))}
+        </div>
+
+        <!-- Case Study Grid (Pattern 5.1) -->
+        <div id="case-study-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+          {caseStudies.map((study, index) => {
+            const studyCategories = [
+              study.data.industry?.toLowerCase().replace(/\s+/g, '-'),
+              ...study.data.services_used.map(s => s.data.title.toLowerCase().replace(/\s+/g, '-'))
+            ].filter(Boolean).join(' ');
+
+            return (
+              <a 
+                href={`/en/work/${study.slug.replace('en/', '')}`} 
+                class="case-study-card block group"
+                data-categories={studyCategories}
+              >
+                <div class="bg-surface-50 rounded-md shadow-md transition-all duration-300 ease-in-out group-hover:shadow-xl group-hover:-translate-y-1 animate-on-scroll" style={`--delay: ${index * 100}ms;`}>
+                  <Image 
+                    src={study.data.featured_image} 
+                    alt={study.data.project_summary}
+                    width={800}
+                    height={600}
+                    format="webp"
+                    class="w-full h-48 object-cover rounded-t-md" 
+                    loading="lazy"
+                  />
+                  <div class="p-6 md:p-8">
+                    <h3 class="font-inter text-xl font-semibold text-primary-700 mb-2">{study.data.client_name}</h3>
+                    <p class="font-lora text-base text-surface-900 mb-4 h-24 overflow-hidden">{study.data.project_summary}</p>
+                    <div class="font-inter text-accent-500 group-hover:text-accent-600 font-medium text-sm transition-colors duration-300 ease-in-out flex items-center">
+                      View Case Study <ArrowRight class="ml-1 w-4 h-4" />
+                    </div>
+                  </div>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+        <div id="no-results" class="hidden text-center py-16 animate-on-scroll">
+          <h3 class="font-inter text-xl font-semibold text-primary-700">No Projects Found</h3>
+          <p class="font-lora text-lg text-surface-900 mt-2">There are no projects matching your selected filter. Please try another category.</p>
+        </div>
+      </div>
+    </section>
+
+    <CtaSection />
+  </main>
+</BaseLayout>
+
+<style>
+  .filter-btn {
+    background-color: transparent;
+    border: 1px solid theme('colors.surface.300');
+    color: theme('colors.surface.900');
+  }
+  .filter-btn:hover {
+    background-color: theme('colors.surface.50');
+    border-color: theme('colors.accent.500');
+    color: theme('colors.accent.600');
+  }
+  .filter-btn.active {
+    background-color: theme('colors.primary.700');
+    border-color: theme('colors.primary.700');
+    color: theme('colors.surface.50');
+    box-shadow: theme('boxShadow.md');
+  }
+
+  .case-study-card {
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+  }
+  .case-study-card.hidden {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterControls = document.getElementById('filter-controls');
+    if (!filterControls) return;
+
+    const caseStudyCards = document.querySelectorAll('.case-study-card');
+    const noResultsMessage = document.getElementById('no-results');
+    const filterButtons = filterControls.querySelectorAll('.filter-btn');
+
+    filterControls.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (!target.matches('.filter-btn')) return;
+
+      const filterValue = target.dataset.filter;
+      
+      // Update active button state
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      target.classList.add('active');
+
+      let visibleCount = 0;
+      caseStudyCards.forEach(card => {
+        const categories = card.getAttribute('data-categories');
+        const shouldShow = filterValue === 'all' || (categories && categories.includes(filterValue));
+        
+        if (shouldShow) {
+          card.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+      
+      if (noResultsMessage) {
+        if (visibleCount === 0) {
+          noResultsMessage.classList.remove('hidden');
+        } else {
+          noResultsMessage.classList.add('hidden');
+        }
+      }
+    });
+  });
+</script>
+```

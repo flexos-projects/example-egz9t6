@@ -1,0 +1,112 @@
+```astro
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CtaBanner from '../../../components/CtaBanner.astro';
+
+const caseStudies = (await getCollection('caseStudies', ({ id }) => id.startsWith('de/'))).sort(
+  (a, b) => new Date(b.data.publish_date).valueOf() - new Date(a.data.publish_date).valueOf()
+);
+
+const page = {
+  title: "Unsere Projekte: Bewährte Ergebnisse für bayerische Unternehmen",
+  description: "Entdecken Sie unser Portfolio an maßgeschneiderten Webanwendungen, digitalen Strategieprojekten und Cloud-Lösungen. Echte Ergebnisse für Fertigung, Handel und professionelle Dienstleistungen.",
+  language: 'de'
+};
+---
+<BaseLayout title={page.title} description={page.description} language={page.language}>
+  
+  <!-- Minimal Hero -->
+  <section class="py-24 md:py-32 lg:py-40 bg-surface-50 text-center">
+    <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
+      <div class="max-w-3xl mx-auto opacity-0 animate-fade-in-up">
+        <h1 class="font-inter text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight text-primary-700 mb-4">
+          Unsere Projekte
+        </h1>
+        <p class="font-lora text-lg md:text-xl text-surface-900 opacity-90">
+          Einblicke in unsere Arbeit und die Erfolgsgeschichten, die wir gemeinsam mit unseren Kunden geschrieben haben. Sehen Sie, wie wir strategische Klarheit in messbare Ergebnisse verwandeln.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Case Studies Grid -->
+  <section class="py-16 md:py-24 bg-surface-100">
+    <div class="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
+      {caseStudies.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+          {caseStudies.map((study, index) => (
+            <a 
+              href={`/de/projekte/${study.slug}/`} 
+              class="group bg-surface-50 rounded-md shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 block opacity-0 translate-y-6 motion-safe:animate-[fade-in-up_500ms_ease-out_forwards]"
+              style={`--delay: ${index * 100}ms;`}
+              aria-label={`Fallstudie für ${study.data.client_name} ansehen`}
+            >
+              <div class="relative overflow-hidden">
+                <Image 
+                  src={study.data.featured_image} 
+                  alt={`Vorschaubild für das Projekt mit ${study.data.client_name}`}
+                  class="w-full h-48 object-cover rounded-t-md transition-transform duration-300 ease-in-out group-hover:scale-105"
+                  width={600}
+                  height={400}
+                  formats={['avif', 'webp']}
+                  loading="lazy"
+                  quality={80}
+                />
+              </div>
+              <div class="p-6">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium bg-primary-100 text-primary-700">
+                    {study.data.industry}
+                  </span>
+                  {study.data.impact_statistic && (
+                    <span class="font-inter text-sm font-bold text-accent-600">{study.data.impact_statistic}</span>
+                  )}
+                </div>
+                <h3 class="font-inter text-xl font-semibold text-primary-700 mb-2 leading-tight">
+                  {study.data.client_name}
+                </h3>
+                <p class="font-lora text-base text-surface-900 mb-4 line-clamp-3">
+                  {study.data.project_summary}
+                </p>
+                <div class="font-inter text-accent-500 group-hover:text-accent-600 font-medium text-sm transition-colors duration-300 ease-in-out">
+                  Fallstudie ansehen &rarr;
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-20">
+          <svg class="mx-auto h-12 w-12 text-surface-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+          </svg>
+          <h3 class="mt-2 text-lg font-medium text-primary-700">Keine Projekte gefunden</h3>
+          <p class="mt-1 text-base text-surface-900">Es wurden noch keine Fallstudien veröffentlicht. Bitte schauen Sie bald wieder vorbei.</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <CtaBanner
+    headline="Bereit, Ihr eigenes Erfolgsprojekt zu starten?"
+    subtext="Lassen Sie uns darüber sprechen, wie unsere Expertise Ihre nächste Erfolgsgeschichte vorantreiben kann. Kontaktieren Sie uns für eine unverbindliche Erstberatung."
+    buttonText="Gespräch beginnen"
+    buttonUrl="/de/kontakt/"
+    lang="de"
+    backgroundColor="bg-primary-700"
+  />
+
+</BaseLayout>
+
+<style>
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
+</style>
+```
