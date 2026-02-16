@@ -1,59 +1,63 @@
 ---
-id: "002-features"
-title: "Feature Inventory"
 type: doc
 subtype: core
-status: draft
-sequence: 2
-tags: [features, mvp, scope]
+title: 002-features.md — Feature Inventory
 ---
 
-# Feature Inventory
+This feature inventory is ruthlessly prioritized to deliver maximum business value at launch and create a foundation for future growth.
 
-> The complete list of what this product can do, organized by priority. This is the single source of truth for product scope.
+### Priority 1: Launch Essentials (P1)
 
-## Priority Framework
+*These features are non-negotiable for launch. They directly address the core business needs and critical content gaps.*
 
-Features are classified into three tiers:
+1.  **Bilingual Architecture (DE/EN):**
+    *   **Description:** A robust system for managing and displaying all content in both German and English, with a prominent, user-friendly language toggle in the header.
+    *   **Rationale:** Core business requirement. Essential for serving their entire client base and projecting a professional image.
 
-- **P0 (Must Have):** The product doesn't work without these. Ship in MVP.
-- **P1 (Should Have):** Important for a good experience. Ship in v1.1.
-- **P2 (Nice to Have):** Delightful but not essential. Ship when capacity allows.
+2.  **Case Study Engine:**
+    *   **Description:** A dedicated "Our Work" section with a filterable grid of projects, leading to detailed case study pages. Each case study will follow a "Challenge, Solution, Impact" format with rich imagery, client details, and key metrics.
+    *   **Rationale:** The #1 priority. This feature directly solves the "No Visual Proof" gap and is the most powerful tool for building trust and demonstrating expertise.
 
-## P0 Features (MVP)
+3.  **Benefit-Oriented Service Pages:**
+    *   **Description:** Individual pages for each core service (Custom Web Apps, Digital Strategy, etc.) that focus on the business benefits for the client, not just the technical specifications. Will include sections on "Our Process" and link to relevant case studies.
+    *   **Rationale:** Translates technical services into business value, addressing the "overly technical" feedback and speaking directly to decision-makers.
 
-List every feature that must exist for the product to be viable. For each:
+4.  **The "Human" About Us Page:**
+    *   **Description:** A compelling page that tells the founder's story and features professional photos, detailed bios, and credentials for Dr. Anna Müller, Markus Schmidt, and Lena Meyer.
+    *   **Rationale:** Leverages their key differentiator—the expertise of their people—to build a personal connection and trust that faceless competitors cannot.
 
-- **Name:** Short, descriptive name
-- **Description:** What it does in 2-3 sentences
-- **User Stories:** "As a [user], I want to [action] so that [benefit]"
-- **Acceptance Criteria:** How do we know it's done?
-- **Dependencies:** Other features this requires
-- **Pages:** Which pages surface this feature
+5.  **"Insights" Hub (Blog):**
+    *   **Description:** A simple but elegant blog section to house thought leadership articles. Will include author attribution (linking to team bios) and simple categorization.
+    *   **Rationale:** Establishes authority, addresses the "No Thought Leadership" gap, and provides crucial fuel for the SEO strategy.
 
-## P1 Features
+6.  **High-Trust Contact & Consultation Form:**
+    *   **Description:** A dedicated contact page with a multi-step "Schedule a Consultation" form that asks qualifying questions (e.g., "What is your primary business challenge?"). Includes direct contact info (address, email, phone).
+    *   **Rationale:** The primary conversion point of the site. The goal is to start a high-quality conversation, not just collect emails.
 
-Features that make the product good, not just functional. Same format as P0.
+### Priority 2: Fast Follows (Post-Launch, Month 1)
 
-## P2 Features
+*These features build on the P1 foundation to enhance social proof and lead nurturing.*
 
-Features that delight. Same format as P0.
+1.  **Client Logo Bar:**
+    *   **Description:** A simple, elegant component for the homepage and About page displaying logos of happy clients.
+    *   **Rationale:** A quick, powerful visual indicator of trust and experience.
 
-## Feature-to-Page Matrix
+2.  **Testimonial System:**
+    *   **Description:** A system to embed compelling client quotes (with name, title, company) contextually on relevant service pages, case studies, and the homepage.
+    *   **Rationale:** Directly addresses the "No Testimonials" gap and provides critical third-party validation at key decision points in the user journey.
 
-A grid showing which features appear on which pages. This reveals gaps — pages with no features, features with no pages.
+3.  **Newsletter Integration:**
+    *   **Description:** A simple sign-up form, likely in the footer and at the end of "Insights" articles, to capture emails for a future newsletter.
+    *   **Rationale:** A low-effort way to build a marketing list and nurture potential leads with their expert content.
 
-| Feature | Landing | Dashboard | Settings | Profile |
-|---------|---------|-----------|----------|---------|
-| (list features vs pages) | | | | |
+### Priority 3: Future Enhancements
 
-## MVP Scope
+*Long-term ideas to expand the site's utility and lead generation capabilities.*
 
-Summarize the exact scope of the first release. What's in, what's out, and why. Include estimated complexity (S/M/L) for each P0 feature.
+1.  **Interactive Tools/Calculators:**
+    *   **Description:** Simple, valuable tools like a "Cloud Readiness Assessment" quiz or an "ROI Calculator for Custom Software" that provide value in exchange for an email.
+    *   **Rationale:** Powerful lead magnets that further position them as helpful experts.
 
-## Feature Dependencies
-
-Which features depend on others? Draw the dependency graph as a list:
-
-- Feature A requires Feature B (because...)
-- Feature C requires Feature A and Feature D
+2.  **Webinars & Events Section:**
+    *   **Description:** A section to promote and archive webinars or local events hosted by the team.
+    *   **Rationale:** A natural extension of the "Insights" strategy to engage with their audience in a more direct format.

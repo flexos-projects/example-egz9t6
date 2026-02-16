@@ -1,99 +1,46 @@
 ---
-id: "007-technical"
-title: "Technical Architecture"
 type: doc
 subtype: core
-status: draft
-sequence: 7
-tags: [technical, architecture, stack, deployment]
+title: 007-technical.md — Technical Architecture
 ---
 
-# Technical Architecture
+This document outlines the technical specifications for building a high-performance, secure, and SEO-optimized website for InnovationHub Solutions GmbH.
 
-> How the product is built, deployed, and maintained. The engineer's reference document.
+### Core Stack
+*   **Framework:** **Astro**
+    *   **Rationale:** Astro's static-first architecture delivers exceptional performance (fast Core Web Vitals) and security by default. Its component-based model is ideal for building a maintainable marketing site, and its integration with UI frameworks (like React or Svelte) can be used for interactive "islands" if needed in the future.
+*   **Deployment:** **Vercel**
+    *   **Rationale:** Vercel offers a seamless Git-based workflow, automatic deployments, global CDN for fast load times, and serverless functions for handling forms. Its integration with Astro is first-class.
 
-## Tech Stack
+### Performance Targets
+*   **Core Web Vitals:** All pages must score "Good" in Google Search Console.
+*   **Lighthouse Score:** Target a score of 95+ across Performance, Accessibility, Best Practices, and SEO.
+*   **Load Time:** First Contentful Paint (FCP) should be under 1 second for all key pages.
 
-| Layer | Technology | Why |
-|-------|-----------|-----|
-| Framework | Nuxt 4 | Full-stack Vue, SSR, file-based routing |
-| Database | Firestore | Real-time, serverless, scales automatically |
-| Auth | Firebase Auth | Email/password, social login, session management |
-| Hosting | Vercel | Edge deployment, preview deploys, serverless functions |
-| Storage | Vercel Blob | File uploads, images, assets |
-| Styling | UnoCSS / Tailwind | Utility-first, design token integration |
+### SEO & Structured Data
+*   **Meta Tags:** All pages will have unique, optimized `title` and `meta description` tags, managed through frontmatter. The `astro-seo` component will be used to automate standard tags.
+*   **Structured Data (Schema.org):**
+    *   `Organization` schema on all pages.
+    *   `Service` schema on all service detail pages.
+    *   `Article` schema for all posts in the "Insights" section.
+    *   `Person` schema for team members on the "About Us" page.
+*   **Sitemap:** An XML sitemap will be auto-generated at build time using `@astrojs/sitemap`.
+*   **Robots.txt:** A `robots.txt` file will be configured to allow crawling of all necessary assets.
+*   **Open Graph & Twitter Cards:** OG tags will be implemented for rich sharing on social media.
 
-## Architecture Overview
+### Multilingual (i18n) Setup
+*   **Routing:** Astro's built-in i18n routing will be used. Content will be structured in language-specific directories (e.g., `src/pages/de/`, `src/pages/en/`).
+*   **`hreflang` Tags:** These will be automatically generated to signal the relationship between German and English page versions to search engines, preventing duplicate content issues.
+*   **Content:** **Professional human translation is mandatory.** Machine translation is not acceptable for this project's quality standards.
 
-Describe the high-level architecture — client/server split, data flow, caching strategy.
+### Forms & Integrations
+*   **Form Handling:** The "Schedule a Consultation" form will submit its data to a **Vercel Serverless Function**. This function will validate the data and then send a formatted email notification to InnovationHub and an auto-response to the user. This avoids reliance on third-party form services.
+*   **Analytics:** We will use **Vercel Analytics** for high-level, privacy-respecting traffic data. For more detailed insights, **Plausible Analytics** is recommended as a GDPR-compliant alternative to Google Analytics.
+*   **Google Business Profile:** The website address and contact information will be synchronized with the company's Google Business Profile to ensure consistency.
 
-### Client
+### Asset & Content Management
+*   **Image Optimization:** All images will be processed using Astro's built-in `<Image />` component. This will automate resizing, format conversion (WebP/AVIF), and lazy loading for optimal performance.
+*   **Content:** Content will be managed directly in Markdown (`.md` or `.mdx`) files within the Git repository. This provides version control, and a simple editing experience, and is ideal for a tech-savvy team. For future ease of use by non-developers, a Git-based CMS like Decap CMS can be integrated.
 
-- Nuxt 4 SPA with SSR for public pages
-- Vue 3 Composition API throughout
-- State management via composables (not Pinia unless complex)
-- File-based routing with middleware for auth gates
-
-### Server
-
-- Nuxt server routes (server/api/)
-- Firebase Admin SDK for privileged operations
-- Server-side rendering for SEO-critical pages
-- Edge functions for API routes
-
-### Data Flow
-
-```
-Client → Nuxt Server Routes → Firestore
-         ↕                     ↕
-      Firebase Auth         Cloud Functions (if needed)
-```
-
-## API Routes
-
-List every API endpoint the product needs:
-
-| Method | Path | Purpose | Auth |
-|--------|------|---------|------|
-| POST | /api/auth/login | Authenticate user | No |
-| GET | /api/[resource] | List resources | Yes |
-| POST | /api/[resource] | Create resource | Yes |
-| (continue...) | | | |
-
-## Authentication
-
-- **Method:** Firebase Auth (email/password + Google OAuth)
-- **Session:** HTTP-only cookie with Firebase session token
-- **Middleware:** `auth.ts` middleware checks session on protected routes
-- **Token refresh:** Automatic via Firebase SDK
-
-## Environment Variables
-
-| Variable | Purpose | Required |
-|----------|---------|----------|
-| `FIREBASE_PROJECT_ID` | Firebase project | Yes |
-| `FIREBASE_CLIENT_EMAIL` | Service account | Yes |
-| `FIREBASE_PRIVATE_KEY` | Service account | Yes |
-| (continue...) | | |
-
-## Deployment
-
-- **Production:** Vercel, auto-deploy from `main` branch
-- **Preview:** Vercel preview deploys on every PR
-- **Database:** Firestore production instance
-- **CI/CD:** GitHub Actions for linting, type-checking, tests
-
-## Performance Targets
-
-- **First Contentful Paint:** < 1.5s
-- **Time to Interactive:** < 3s
-- **Lighthouse Score:** > 90 (performance, accessibility)
-- **API Response Time:** < 200ms (p95)
-
-## Security Considerations
-
-- All API routes validate input (Zod schemas)
-- Firestore security rules enforce per-document access
-- CORS configured for production domain only
-- Rate limiting on auth endpoints
-- No secrets in client bundle
+### Accessibility (a11y)
+*   The site will be built to meet WCAG 2.1 AA standards. This includes semantic HTML, proper heading structure, ARIA attributes where necessary, sufficient color contrast, and keyboard navigability. Automated accessibility checks will be part of the development process.
