@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example Consulting Group | Strategic Clarity. Unwavering Results.</title>
+
+    <!-- Google Fonts: Inter and Lora -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Design System Tokens as CSS Custom Properties & Custom Styles -->
+    <style type="text/tailwindcss">
+        :root {
+            /* Colors: Primary */
+            --color-primary-50: #E8EAF0; --color-primary-100: #D1D5E1; --color-primary-200: #A3ADC3; --color-primary-300: #7584A5; --color-primary-400: #475C87; --color-primary-500: #193469; --color-primary-600: #172E5D; --color-primary-700: #142851; --color-primary-800: #112245; --color-primary-900: #0F1C3A; --color-primary-950: #0B142A;
+            /* Colors: Accent */
+            --color-accent-50: #FBF6EE; --color-accent-100: #F7EDDC; --color-accent-200: #EEDAA0; --color-accent-300: #E5C683; --color-accent-400: #DCB367; --color-accent-500: #D4A056; --color-accent-600: #B78746; --color-accent-700: #9A7039; --color-accent-800: #7D5A2F; --color-accent-900: #604525; --color-accent-950: #4C361D;
+            /* Colors: Surface */
+            --color-surface-50: #FFFFFF; --color-surface-100: #F4F5F7; --color-surface-200: #E9ECF0; --color-surface-300: #D8DDE4; --color-surface-900: #101828;
+            /* Colors: Semantic */
+            --color-success: #057A55; --color-warning: #D4A056; --color-error: #BE123C;
+        }
+        @layer base {
+            /* Base font styles */
+            h1, h2, h3, h4, h5, h6 { @apply font-inter font-semibold text-primary-700; }
+            p, blockquote, address, ul, ol, dl { @apply font-lora text-base text-surface-900; }
+        }
+        @layer utilities {
+            /* Animation Keyframes */
+            @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+            @keyframes fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+            
+            /* Animation Utilities */
+            .animate-fade-in { animation: fade-in 700ms ease-out forwards; }
+            .animate-on-scroll { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease-out, transform 0.5s ease-out; transition-delay: var(--delay, 0ms); }
+            .is-visible { opacity: 1; transform: translateY(0); }
+            
+            /* Custom Details/Summary styling */
+            details > summary { list-style: none; }
+            details > summary::-webkit-details-marker { display: none; }
+            details[open] .details-icon { transform: rotate(45deg); }
+        }
+    </style>
+
+    <!-- Tailwind Custom Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'lora': ['Lora', 'serif'],
+                    },
+                    colors: {
+                        primary: { 50: 'var(--color-primary-50)', 100: 'var(--color-primary-100)', 200: 'var(--color-primary-200)', 300: 'var(--color-primary-300)', 400: 'var(--color-primary-400)', 500: 'var(--color-primary-500)', 600: 'var(--color-primary-600)', 700: 'var(--color-primary-700)', 800: 'var(--color-primary-800)', 900: 'var(--color-primary-900)', 950: 'var(--color-primary-950)', },
+                        accent: { 50: 'var(--color-accent-50)', 100: 'var(--color-accent-100)', 200: 'var(--color-accent-200)', 300: 'var(--color-accent-300)', 400: 'var(--color-accent-400)', 500: 'var(--color-accent-500)', 600: 'var(--color-accent-600)', 700: 'var(--color-accent-700)', 800: 'var(--color-accent-800)', 900: 'var(--color-accent-900)', 950: 'var(--color-accent-950)', },
+                        surface: { 50: 'var(--color-surface-50)', 100: 'var(--color-surface-100)', 200: 'var(--color-surface-200)', 300: 'var(--color-surface-300)', 900: 'var(--color-surface-900)', },
+                        success: 'var(--color-success)', warning: 'var(--color-warning)', error: 'var(--color-error)',
+                    },
+                    lineHeight: { 'extra-loose': '1.75' }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface-50 antialiased">
+
+    <!-- Header -->
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out py-6 text-primary-700">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <a href="#" aria-label="Homepage">
+                <svg id="header-logo" class="h-8 md:h-9 transition-colors duration-300" width="200" height="36" viewBox="0 0 200 36" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14.24 36V0H0V36H14.24ZM6.64 30.2V5.8H7.6V30.2H6.64Z" />
+                    <path d="M37.155 36V0H22.915V36H37.155ZM29.555 30.2V5.8H30.515V30.2H29.555Z" />
+                    <path d="M57.6416 35.24C53.7616 35.24 50.5616 33.72 48.0416 30.68L52.0016 26.88C53.4816 28.64 55.2816 29.52 57.4016 29.52C59.9616 29.52 61.2416 28.2 61.2416 25.56V24.84H61.1216C60.2816 26.2 58.9616 26.88 57.1616 26.88C53.2816 26.88 50.2816 24.28 50.2816 19.48C50.2816 14.68 53.2816 12.08 57.1616 12.08C58.9616 12.08 60.2416 12.72 61.1216 14.04H61.2416V12.6H66.8816V25.4C66.8816 31.64 63.2816 35.24 57.6416 35.24ZM58.2016 21.2C56.2416 21.2 55.2816 20.12 55.2816 17.8C55.2816 15.48 56.2416 14.4 58.2016 14.4C60.1616 14.4 61.1216 15.48 61.1216 17.8C61.1216 20.12 60.1616 21.2 58.2016 21.2Z" />
+                    <text x="75" y="27" font-family="Inter, sans-serif" font-size="24" font-weight="500">CONSULTING</text>
+                </svg>
+            </a>
+            <nav class="hidden md:flex items-center">
+                <ul class="flex space-x-8">
+                    <li><a href="#services" class="font-inter font-medium hover:text-accent-500 transition-colors duration-300">Services</a></li>
+                    <li><a href="#about" class="font-inter font-medium hover:text-accent-500 transition-colors duration-300">About</a></li>
+                    <li><a href="#faq" class="font-inter font-medium hover:text-accent-500 transition-colors duration-300">FAQ</a></li>
+                </ul>
+                <a href="#contact" class="ml-8 bg-accent-500 hover:bg-accent-600 text-white font-inter font-medium py-2 px-5 rounded-md shadow-md transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-0.5">Contact Us</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden p-2 -mr-2" aria-label="Open menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay" class="fixed inset-0 bg-primary-900/95 backdrop-blur-sm z-40 flex flex-col justify-center items-center text-white transition-opacity duration-300 ease-in-out opacity-0 invisible">
+        <button id="mobile-menu-close" class="absolute top-7 right-4 p-2" aria-label="Close menu">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+        <nav>
+            <ul class="flex flex-col items-center space-y-8 text-center">
+                <li><a href="#services" class="font-inter text-3xl font-semibold hover:text-accent-500 transition-colors duration-300 mobile-nav-link">Services</a></li>
+                <li><a href="#about" class="font-inter text-3xl font-semibold hover:text-accent-500 transition-colors duration-300 mobile-nav-link">About</a></li>
+                <li><a href="#faq" class="font-inter text-3xl font-semibold hover:text-accent-500 transition-colors duration-300 mobile-nav-link">FAQ</a></li>
+                <li>
+                    <a href="#contact" class="mt-8 inline-block bg-accent-500 hover:bg-accent-600 text-white font-inter font-medium py-3 px-8 rounded-md shadow-lg transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-0.5 mobile-nav-link">
+                        Contact Us
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <main class="opacity-0 animate-fade-in">
+        <!-- Hero Section -->
+        <section class="relative h-screen bg-cover bg-center text-white flex items-center" style="background-image: url('https://source.unsplash.com/1920x1080/?modern,architecture,minimal')">
+            <div class="absolute inset-0 bg-primary-800/70"></div>
+            <div class="relative z-10 w-full">
+                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-3xl text-center md:text-left">
+                        <h1 class="font-inter text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 opacity-0 animate-fade-in-up" style="animation-delay: 200ms;">
+                            Strategic Clarity.<br>Unwavering Results.
+                        </h1>
+                        <p class="font-lora text-lg md:text-xl lg:text-2xl mb-8 opacity-90 leading-extra-loose opacity-0 animate-fade-in-up" style="animation-delay: 400ms;">
+                            We empower leaders with actionable insights for complex challenges, transforming ambitious goals into measurable success.
+                        </p>
+                        <a href="#services" class="inline-flex items-center bg-accent-500 hover:bg-accent-600 text-white font-inter font-medium py-3 px-8 rounded-md shadow-lg transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 opacity-0 animate-fade-in-up" style="animation-delay: 600ms;">
+                            Explore Our Services
+                            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 hidden md:block opacity-0 animate-fade-in-up" style="animation-delay: 800ms;">
+                <svg class="w-6 h-6 text-white animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="py-20 md:py-24 bg-surface-100">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center animate-on-scroll">
+                    <div>
+                        <span class="font-inter text-4xl md:text-5xl font-bold text-primary-700" data-count-up="20">0</span>
+                        <p class="font-lora text-lg text-surface-900 mt-2">Years of Experience</p>
+                    </div>
+                    <div>
+                        <span class="font-inter text-4xl md:text-5xl font-bold text-primary-700" data-count-up="150">+</span>
+                        <p class="font-lora text-lg text-surface-900 mt-2">Successful Projects</p>
+                    </div>
+                    <div>
+                        <span class="font-inter text-4xl md:text-5xl font-bold text-primary-700" data-count-up="95">%</span>
+                        <p class="font-lora text-lg text-surface-900 mt-2">Client Retention</p>
+                    </div>
+                    <div>
+                        <span class="font-inter text-4xl md:text-5xl font-bold text-primary-700" data-count-up="12">B+</span>
+                        <p class="font-lora text-lg text-surface-900 mt-2">Value Created (€)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Services Section -->
+        <section id="services" class="py-24 md:py-32 bg-surface-50">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto animate-on-scroll">
+                    <h2 class="font-inter text-3xl md:text-4xl font-semibold text-primary-700">Our Core Expertise</h2>
+                    <p class="font-lora text-lg md:text-xl mt-4 text-surface-900 leading-extra-loose">We provide tailored consulting services to navigate your most critical business challenges and unlock sustainable growth.</p>
+                </div>
+                <div class="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                    <!-- Service 1 -->
+                    <div class="flex flex-col text-center items-center animate-on-scroll">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-16 w-16 rounded-md bg-accent-100 text-accent-600">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v14L9 19zm0 0l-7 3v-14l7-3m0 17v-14"></path></svg>
+                            </div>
+                        </div>
+                        <h3 class="font-inter text-xl font-semibold text-primary-700 mt-6">Market Strategy</h3>
+                        <p class="font-lora text-base text-surface-900 mt-2 leading-extra-loose">Developing robust market entry and growth strategies for dynamic and competitive environments.</p>
+                    </div>
+                    <!-- Service 2 -->
+                    <div class="flex flex-col text-center items-center animate-on-scroll" style="--delay: 150ms;">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-16 w-16 rounded-md bg-accent-100 text-accent-600">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                            </div>
+                        </div>
+                        <h3 class="font-inter text-xl font-semibold text-primary-700 mt-6">Digital Transformation</h3>
+                        <p class="font-lora text-base text-surface-900 mt-2 leading-extra-loose">Guiding organizations through complex technological shifts to enhance efficiency, innovation, and customer value.</p>
+                    </div>
+                    <!-- Service 3 -->
+                    <div class="flex flex-col text-center items-center animate-on-scroll" style="--delay: 300ms;">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-16 w-16 rounded-md bg-accent-100 text-accent-600">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6V4m0 2a2 2 111-2H9.5a2 2 0 00-2 2v6m3 2l4-4m-4 4v7M10 20v-6"></path></svg>
+                            </div>
+                        </div>
+                        <h3 class="font-inter text-xl font-semibold text-primary-700 mt-6">Organizational Design</h3>
+                        <p class="font-lora text-base text-surface-900 mt-2 leading-extra-loose">Optimizing structures, processes, and talent to foster agility, collaboration, and high performance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-24 md:py-32 bg-surface-100">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-2 items-center gap-12 md:gap-16">
+                    <div class="animate-on-scroll">
+                        <img src="https://source.unsplash.com/800x600/?office,collaboration" alt="Team collaborating in a modern office" class="w-full h-auto object-cover rounded-sm shadow-lg">
+                    </div>
+                    <div class="animate-on-scroll" style="--delay: 200ms;">
+                        <h2 class="font-inter text-3xl md:text-4xl font-semibold text-primary-700 leading-tight">
+                            Partnerships that Drive Progress
+                        </h2>
+                        <p class="font-lora text-lg text-surface-900 mt-4 leading-extra-loose">
+                            We are more than consultants; we are dedicated partners in your success. Our approach is built on a foundation of deep industry expertise, rigorous analysis, and a collaborative spirit. We immerse ourselves in your world to understand your unique challenges and opportunities, crafting bespoke strategies that deliver not just recommendations, but real, measurable impact.
+                        </p>
+                        <p class="font-lora text-lg text-surface-900 mt-4 leading-extra-loose">
+                            Based in Munich, we combine German precision with a global perspective to serve a diverse clientele of ambitious leaders.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonial Section -->
+        <section class="py-24 md:py-32 bg-surface-50">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="max-w-4xl mx-auto text-center animate-on-scroll">
+                    <img src="https://source.unsplash.com/128x128/?portrait,professional" alt="Client portrait" class="w-24 h-24 rounded-full object-cover mx-auto mb-6 shadow-md">
+                    <blockquote class="font-lora text-2xl md:text-3xl italic text-surface-900 leading-relaxed">
+                        &ldquo;The Example Consulting Group provided unparalleled strategic clarity. Their insights were instrumental in navigating our market challenges and positioned us for significant, sustainable growth.&rdquo;
+                    </blockquote>
+                    <div class="mt-8">
+                        <p class="font-inter text-lg font-medium text-primary-700">Dr. Anya Sharma</p>
+                        <p class="font-lora text-base text-surface-600">CEO, Tech Innovators AG</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="py-24 md:py-32 bg-surface-100">
+            <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+                <div class="text-center animate-on-scroll">
+                    <h2 class="font-inter text-3xl md:text-4xl font-semibold text-primary-700">Frequently Asked Questions</h2>
+                    <p class="font-lora text-lg md:text-xl mt-4 text-surface-900 leading-extra-loose">Quick answers to common inquiries about our process and partnership.</p>
+                </div>
+                <div class="mt-12 space-y-4">
+                    <details class="border-b border-surface-200 py-4 animate-on-scroll">
+                        <summary class="font-inter text-lg font-semibold text-primary-700 cursor-pointer flex justify-between items-center hover:text-accent-500 transition-colors duration-300">
+                            What types of companies do you work with?
+                            <svg class="transform rotate-0 transition-transform duration-300 ease-in-out details-icon w-6 h-6 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        </summary>
+                        <div class="font-lora text-base text-surface-900 mt-4 pb-2 leading-extra-loose">
+                            We partner with a diverse range of organizations, from ambitious startups to established DAX-listed enterprises, across various industries including technology, manufacturing, and finance. Our focus is on clients who are committed to strategic change and sustainable growth.
+                        </div>
+                    </details>
+                    <details class="border-b border-surface-200 py-4 animate-on-scroll" style="--delay: 150ms;">
+                        <summary class="font-inter text-lg font-semibold text-primary-700 cursor-pointer flex justify-between items-center hover:text-accent-500 transition-colors duration-300">
+                            What is your typical engagement process?
+                            <svg class="transform rotate-0 transition-transform duration-300 ease-in-out details-icon w-6 h-6 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        </summary>
+                        <div class="font-lora text-base text-surface-900 mt-4 pb-2 leading-extra-loose">
+                            Our process begins with a deep-dive discovery phase to understand your unique context. This is followed by collaborative strategy design, where we develop a clear roadmap. We then partner with you through the implementation phase and conclude with a performance review to ensure targets are met and value is delivered.
+                        </div>
+                    </details>
+                    <details class="border-b border-surface-200 py-4 animate-on-scroll" style="--delay: 300ms;">
+                        <summary class="font-inter text-lg font-semibold text-primary-700 cursor-pointer flex justify-between items-center hover:text-accent-500 transition-colors duration-300">
+                            How do you measure success?
+                            <svg class="transform rotate-0 transition-transform duration-300 ease-in-out details-icon w-6 h-6 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        </summary>
+                        <div class="font-lora text-base text-surface-900 mt-4 pb-2 leading-extra-loose">
+                            Success is defined collaboratively at the outset of every engagement. We establish clear, measurable Key Performance Indicators (KPIs) that align with your strategic business objectives. Our success is measured by our ability to help you achieve these targets and deliver tangible, long-term value.
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section id="contact" class="py-24 md:py-32 bg-primary-700 text-white">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="max-w-4xl mx-auto text-center animate-on-scroll">
+                    <h2 class="font-inter text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">Ready to Transform Your Business?</h2>
+                    <p class="font-lora text-xl mt-4 mb-10 opacity-90 leading-extra-loose">Let's discuss how our expertise can drive your next success story. Schedule a complimentary consultation with one of our senior partners today.</p>
+                    <a href="#" class="inline-flex items-center bg-accent-500 hover:bg-accent-600 text-white font-inter font-medium py-3 px-8 rounded-md shadow-lg transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
+                        Get in Touch
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-primary-900 text-primary-100 py-20">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <!-- Column 1: Logo & Info -->
+                <div class="md:col-span-1">
+                    <svg class="h-9" width="200" height="36" viewBox="0 0 200 36" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                       <path d="M14.24 36V0H0V36H14.24ZM6.64 30.2V5.8H7.6V30.2H6.64Z" />
+                       <path d="M37.155 36V0H22.915V36H37.155ZM29.555 30.2V5.8H30.515V30.2H29.555Z" />
+                       <path d="M57.6416 35.24C53.7616 35.24 50.5616 33.72 48.0416 30.68L52.0016 26.88C53.4816 28.64 55.2816 29.52 57.4016 29.52C59.9616 29.52 61.2416 28.2 61.2416 25.56V24.84H61.1216C60.2816 26.2 58.9616 26.88 57.1616 26.88C53.2816 26.88 50.2816 24.28 50.2816 19.48C50.2816 14.68 53.2816 12.08 57.1616 12.08C58.9616 12.08 60.2416 12.72 61.1216 14.04H61.2416V12.6H66.8816V25.4C66.8816 31.64 63.2816 35.24 57.6416 35.24ZM58.2016 21.2C56.2416 21.2 55.2816 20.12 55.2816 17.8C55.2816 15.48 56.2416 14.4 58.2016 14.4C60.1616 14.4 61.1216 15.48 61.1216 17.8C61.1216 20.12 60.1616 21.2 58.2016 21.2Z" />
+                       <text x="75" y="27" font-family="Inter, sans-serif" font-size="24" font-weight="500">CONSULTING</text>
+                    </svg>
+                    <p class="font-lora text-sm text-primary-200 mt-4 leading-extra-loose">
+                        Empowering leaders with strategic clarity and actionable insights.
+                    </p>
+                    <p class="font-lora text-xs text-primary-400 mt-6">&copy; 2024 Example Consulting Group GmbH. All rights reserved.</p>
+                </div>
+                <!-- Column 2: Quick Links -->
+                <div>
+                    <h4 class="font-inter text-lg font-semibold text-white mb-4">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#services" class="font-lora text-sm text-primary-200 hover:text-accent-500 transition-colors">Services</a></li>
+                        <li><a href="#about" class="font-lora text-sm text-primary-200 hover:text-accent-500 transition-colors">About Us</a></li>
+                        <li><a href="#faq" class="font-lora text-sm text-primary-200 hover:text-accent-500 transition-colors">FAQ</a></li>
+                        <li><a href="#" class="font-lora text-sm text-primary-200 hover:text-accent-500 transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <!-- Column 3: Contact -->
+                <div>
+                    <h4 class="font-inter text-lg font-semibold text-white mb-4">Contact Us</h4>
+                    <address class="not-italic space-y-3">
+                        <p class="font-lora text-sm text-primary-200">Leopoldstraße 2, 80802 München, Germany</p>
+                        <p><a href="mailto:info@example-consulting.de" class="font-lora text-sm text-primary-200 hover:text-accent-500 transition-colors">info@example-consulting.de</a></p>
+                        <p><a href="tel:+49891234567" class="font-lora text-sm text-primary-200 hover:text-accent-500 transition-colors">+49 89 123 4567</a></p>
+                    </address>
+                    <div class="flex space-x-4 mt-6">
+                        <a href="#" class="text-primary-200 hover:text-accent-500 text-xl transition-colors"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-primary-200 hover:text-accent-500 text-xl transition-colors"><i class="fab fa-xing"></i></a>
+                    </div>
+                </div>
+                <!-- Column 4: Newsletter -->
+                <div>
+                    <h4 class="font-inter text-lg font-semibold text-white mb-4">Stay Informed</h4>
+                    <p class="font-lora text-sm text-primary-200 mb-4 leading-extra-loose">Subscribe for the latest insights.</p>
+                    <form class="flex sm:flex-row gap-2">
+                        <input type="email" placeholder="Your email" required class="flex-grow border border-primary-600 bg-primary-800 placeholder-primary-300 text-white py-2 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-300 focus:border-transparent w-full invalid:border-error invalid:text-error invalid:focus:ring-error">
+                        <button type="submit" class="bg-accent-500 hover:bg-accent-600 text-white py-2 px-4 rounded-md font-medium transition-colors">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Interactions -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- Header Scroll Behavior ---
+        const header = document.getElementById('main-header');
+        const logo = document.getElementById('header-logo');
+        const scrollThreshold = 50;
+
+        const handleScroll = () => {
+            if (window.scrollY > scrollThreshold) {
+                header.classList.add('bg-surface-50', 'shadow-md', 'text-primary-700');
+                header.classList.remove('py-6', 'text-white');
+                header.classList.add('py-4');
+            } else {
+                header.classList.remove('bg-surface-50', 'shadow-md');
+                header.classList.add('py-6');
+                header.classList.remove('py-4');
+                // Check if hero is dark enough for white text
+                if (document.querySelector('.relative.h-screen').style.backgroundImage) {
+                    header.classList.add('text-white');
+                } else {
+                    header.classList.add('text-primary-700');
+                }
+            }
+        };
+        // Initial check for hero section
+        if (document.querySelector('.relative.h-screen').style.backgroundImage) {
+            header.classList.add('text-white');
+        }
+        
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll();
+
+        // --- Mobile Menu Toggle ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+        const openMobileMenu = () => {
+            mobileMenuOverlay.classList.remove('opacity-0', 'invisible');
+            document.body.style.overflow = 'hidden';
+        };
+        const closeMobileMenu = () => {
+            mobileMenuOverlay.classList.add('opacity-0', 'invisible');
+            document.body.style.overflow = '';
+        };
+
+        mobileMenuButton.addEventListener('click', openMobileMenu);
+        mobileMenuClose.addEventListener('click', closeMobileMenu);
+        mobileNavLinks.forEach(link => link.addEventListener('click', closeMobileMenu));
+
+        // --- Scroll-triggered Animations ---
+        const animatedElements = document.querySelectorAll('.animate-on-scroll');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        animatedElements.forEach(el => observer.observe(el));
+        
+        // --- Counter Animation ---
+        const counters = document.querySelectorAll('[data-count-up]');
+        const countObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = parseInt(el.getAttribute('data-count-up'));
+                    const suffix = el.textContent.replace(/[0-9]/g, '');
+                    let current = 0;
+                    const increment = target / 100; // Animate over ~100 frames
+                    
+                    const updateCount = () => {
+                        if (current < target) {
+                            current += increment;
+                            el.textContent = Math.ceil(current) + suffix;
+                            requestAnimationFrame(updateCount);
+                        } else {
+                            el.textContent = target + suffix;
+                        }
+                    };
+                    updateCount();
+                    observer.unobserve(el);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        counters.forEach(counter => countObserver.observe(counter));
+    });
+    </script>
+</body>
+</html>
